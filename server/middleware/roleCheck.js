@@ -1,0 +1,18 @@
+// Usage: router.post("/", protect, authorize("admin", "teacher"), handler)
+export const authorize = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      res.status(401);
+      throw new Error("Not authorized — no user context");
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      res.status(403);
+      throw new Error(
+        `Access denied — role '${req.user.role}' is not permitted to perform this action`
+      );
+    }
+
+    next();
+  };
+};
