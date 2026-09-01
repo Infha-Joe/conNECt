@@ -12,6 +12,10 @@ import userRoutes from "./routes/userRoutes.js";
 import departmentRoutes from "./routes/departmentRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import mentorshipRoutes from "./routes/mentorshipRoutes.js";
+import clubRoutes from "./routes/clubRoutes.js";
+import pollRoutes from "./routes/pollRoutes.js";
+import suggestionRoutes from "./routes/suggestionRoutes.js";
+import communityRequestRoutes from "./routes/communityRequestRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -106,6 +110,10 @@ app.use("/api/users", userRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/mentorship", mentorshipRoutes);
+app.use("/api/clubs", clubRoutes);
+app.use("/api/polls", pollRoutes);
+app.use("/api/suggestions", suggestionRoutes);
+app.use("/api/community-requests", communityRequestRoutes);
 
 // 404 + error handling
 app.use(notFound);

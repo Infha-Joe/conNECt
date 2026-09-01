@@ -8,6 +8,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import OpeningAnimation from "./components/OpeningAnimation";
 import MentorshipHub from "./pages/MentorshipHub";
 import ActiveMentorship from "./pages/ActiveMentorship";
+import CommunityHub from "./pages/CommunityHub";
+import Clubs from "./pages/Clubs";
+import ClubDetail from "./pages/ClubDetail";
 
 function App() {
   const [showAnimation, setShowAnimation] = useState(() => {
@@ -59,6 +62,30 @@ function App() {
         element={
           <ProtectedRoute>
             <ActiveMentorship />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/community"
+        element={
+          <ProtectedRoute>
+            <CommunityHub />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/clubs"
+        element={
+          <ProtectedRoute>
+            <Clubs />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/clubs/:id"
+        element={
+          <ProtectedRoute>
+            <ClubDetail />
           </ProtectedRoute>
         }
       />
