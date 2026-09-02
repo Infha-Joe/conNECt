@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import DashboardLayout from "../layouts/DashboardLayout";
 import CreatePost from "../components/CreatePost";
 import PostCard from "../components/PostCard";
@@ -9,9 +11,18 @@ import api from "../services/api";
 import { FiMessageSquare } from "react-icons/fi";
 
 const Dashboard = () => {
+  const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  if (user?.role === "admin") {
+    return <Navigate to="/admin" replace />;
+  }
+
+  if (user?.role === "alumni") {
+    return <Navigate to="/mentorship" replace />;
+  }
 
   useEffect(() => {
     fetchFeed();

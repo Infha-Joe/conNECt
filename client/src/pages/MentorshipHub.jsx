@@ -336,14 +336,18 @@ const MentorshipHub = () => {
   // Helper to determine request status for a specific provider
   const getProviderStatus = (providerId) => {
     // Check if there is an active workspace
-    const activeWorkspace = activeMentorships.find(m => m.mentor._id === providerId && m.status !== "completed");
+    const activeWorkspace = activeMentorships.find(m => m.mentor._id === providerId && m.status === "active");
     if (activeWorkspace) return { status: "ACTIVE", type: "workspace", workspaceId: activeWorkspace._id };
 
-    // Check outgoing requests
-    const outReq = outgoingRequests.find(req => req.mentor._id === providerId);
-    if (outReq) {
-      if (outReq.status === "pending") return { status: "PENDING", type: "request" };
-      if (outReq.status === "rejected") return { status: "REJECTED", type: "request" };
+    // Check outgoing requests (find the most relevant pending one)
+    const pendingReq = outgoingRequests.find(req => req.mentor._id === providerId && req.status === "pending");
+    if (pendingReq) {
+      return { status: "PENDING", type: "request" };
+    }
+
+    const rejectedReq = outgoingRequests.find(req => req.mentor._id === providerId && req.status === "rejected");
+    if (rejectedReq) {
+      return { status: "REJECTED", type: "request" };
     }
 
     return null;
@@ -559,38 +563,52 @@ const MentorshipHub = () => {
             <div className="bg-white p-6 rounded-xl border border-slate-200 text-slate-500 shadow-sm">You have no active workspaces.</div>
           ) : (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {activeMentorships.map(m => (
-                <div key={m._id} className={`bg-white p-5 rounded-xl border shadow-sm flex flex-col justify-between relative overflow-hidden group transition-colors ${m.status === 'completed' ? 'border-slate-200 opacity-75' : 'border-slate-200 hover:border-brand'}`}>
-                  <div className={`absolute top-0 left-0 w-full h-1 ${m.status === 'completed' ? 'bg-slate-300' : 'bg-green-400'}`}></div>
-                  <div>
-                    <div className="flex justify-between items-start mb-2">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                        {m.requestType === "individual" ? "Individual" : "Group"}
+              {activeMentorships.map(m => {
+                const isActive = m.status === 'active';
+                const isCompleted = m.status === 'completed';
+                // Anything else (expired, cancelled) is treated as error state
+                
+                return (
+                  <div key={m._id} className={`bg-white p-5 rounded-xl border shadow-sm flex flex-col justify-between relative overflow-hidden group transition-colors ${!isActive ? 'border-slate-200 opacity-75' : 'border-slate-200 hover:border-brand'}`}>
+                    <div className={`absolute top-0 left-0 w-full h-1 ${
+                      isActive ? 'bg-green-400' : 
+                      isCompleted ? 'bg-slate-300' : 
+                      'bg-red-400'
+                    }`}></div>
+                    <div>
+                      <div className="flex justify-between items-start mb-2">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                          {m.requestType === "individual" ? "Individual" : "Group"}
+                        </p>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${
+                          isActive ? 'bg-green-50 text-green-600' : 
+                          isCompleted ? 'bg-slate-100 text-slate-500' : 
+                          'bg-red-50 text-red-600'
+                        }`}>
+                          {m.status}
+                        </span>
+                      </div>
+                      
+                      <h3 className="text-lg font-bold text-ink mb-1">
+                        {user.role === "student" 
+                          ? `Mentor: ${m.mentor.name}` 
+                          : (m.requestType === "individual" ? `Mentee: ${m.mentee?.name}` : `Group: ${m.groupName || m.groupMembers?.length + " members"}`)
+                        }
+                      </h3>
+                      
+                      <p className="text-xs font-medium text-slate-500 mb-4 mt-2">
+                        {!isActive ? "Closed Workspace" : `Ends: ${new Date(m.endDate).toLocaleDateString()}`}
                       </p>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${m.status === 'completed' ? 'bg-slate-100 text-slate-500' : 'bg-green-50 text-green-600'}`}>
-                        {m.status}
-                      </span>
                     </div>
                     
-                    <h3 className="text-lg font-bold text-ink mb-1">
-                      {user.role === "student" 
-                        ? `Mentor: ${m.mentor.name}` 
-                        : (m.requestType === "individual" ? `Mentee: ${m.mentee?.name}` : `Group: ${m.groupName || m.groupMembers?.length + " members"}`)
-                      }
-                    </h3>
-                    
-                    <p className="text-xs font-medium text-slate-500 mb-4 mt-2">
-                      {m.status === "completed" ? "Closed Workspace" : `Ends: ${new Date(m.endDate).toLocaleDateString()}`}
-                    </p>
+                    <div className="mt-4 pt-4 border-t border-slate-100">
+                      <Link to={`/mentorship/${m._id}`} className="w-full inline-flex justify-center items-center px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 transition-colors">
+                        Open Workspace
+                      </Link>
+                    </div>
                   </div>
-                  
-                  <div className="mt-4 pt-4 border-t border-slate-100">
-                    <Link to={`/mentorship/${m._id}`} className="w-full inline-flex justify-center items-center px-4 py-2 bg-slate-900 text-white text-sm font-semibold rounded-lg hover:bg-slate-800 transition-colors">
-                      Open Workspace
-                    </Link>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

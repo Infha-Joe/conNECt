@@ -1,6 +1,6 @@
 import { useAuth } from "../context/AuthContext";
 import { Link, useLocation } from "react-router-dom";
-import { FiHome, FiUser, FiSearch, FiBell } from "react-icons/fi";
+import { FiHome, FiUser, FiSearch, FiBell, FiBriefcase, FiShield } from "react-icons/fi";
 import LeftSidebar from "../components/layout/LeftSidebar";
 import RightSidebar from "../components/layout/RightSidebar";
 import Avatar from "../components/ui/Avatar";
@@ -62,12 +62,12 @@ const DashboardLayout = ({ children, hideRightSidebar = false }) => {
         </aside>
 
         {/* Center Primary Content */}
-        <main className={`flex-1 pt-6 ${hideRightSidebar ? 'max-w-4xl mx-auto w-full' : 'max-w-[600px] mx-auto lg:max-w-[680px]'}`}>
+        <main className={`flex-1 pt-6 ${(hideRightSidebar || user?.role === "alumni" || user?.role === "admin") ? 'max-w-4xl mx-auto w-full' : 'max-w-[600px] mx-auto lg:max-w-[680px]'}`}>
           {children}
         </main>
 
         {/* Right Sidebar (Desktop only) */}
-        {!hideRightSidebar && (
+        {!(hideRightSidebar || user?.role === "alumni" || user?.role === "admin") && (
           <aside className="hidden lg:block w-72 shrink-0 pt-6 pl-8 ml-8 border-l border-slate-200">
             <div className="sticky top-20">
               <RightSidebar />
@@ -78,13 +78,31 @@ const DashboardLayout = ({ children, hideRightSidebar = false }) => {
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 z-40 flex w-full justify-around border-t border-slate-200 bg-white py-3 md:hidden">
-        <Link 
-          to="/dashboard" 
-          className={`flex flex-col items-center gap-1 ${isActive('/dashboard') ? 'text-brand' : 'text-slate-500'}`}
-        >
-          <FiHome size={22} />
-          <span className="text-[10px] font-medium">Home</span>
-        </Link>
+        {user?.role === "alumni" ? (
+          <Link 
+            to="/mentorship" 
+            className={`flex flex-col items-center gap-1 ${isActive('/mentorship') ? 'text-brand' : 'text-slate-500'}`}
+          >
+            <FiBriefcase size={22} />
+            <span className="text-[10px] font-medium">Workspace</span>
+          </Link>
+        ) : user?.role === "admin" ? (
+          <Link 
+            to="/admin" 
+            className={`flex flex-col items-center gap-1 ${isActive('/admin') ? 'text-brand' : 'text-slate-500'}`}
+          >
+            <FiShield size={22} />
+            <span className="text-[10px] font-medium">Admin</span>
+          </Link>
+        ) : (
+          <Link 
+            to="/dashboard" 
+            className={`flex flex-col items-center gap-1 ${isActive('/dashboard') ? 'text-brand' : 'text-slate-500'}`}
+          >
+            <FiHome size={22} />
+            <span className="text-[10px] font-medium">Home</span>
+          </Link>
+        )}
         <Link 
           to="/profile" 
           className={`flex flex-col items-center gap-1 ${isActive('/profile') ? 'text-brand' : 'text-slate-500'}`}

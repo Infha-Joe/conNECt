@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { FiHome, FiUsers, FiCompass, FiCalendar, FiMessageSquare, FiBell, FiSettings, FiLogOut, FiBriefcase, FiAward, FiShield } from "react-icons/fi";
+import { FiHome, FiUsers, FiCompass, FiCalendar, FiMessageSquare, FiBell, FiSettings, FiLogOut, FiBriefcase, FiAward, FiShield, FiUser } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
 
 const navItems = [
@@ -13,17 +13,25 @@ const navItems = [
   { icon: FiBell, label: "Notifications", path: "#" }, 
 ];
 
+const alumniNavItems = [
+  { icon: FiUser, label: "Profile", path: "/profile" },
+  { icon: FiBell, label: "Notifications", path: "#" },
+  { icon: FiBriefcase, label: "Workspace", path: "/mentorship" },
+];
+
 const LeftSidebar = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
 
+  const currentNavItems = user?.role === "alumni" ? alumniNavItems : navItems;
+
   return (
     <div className="flex h-full flex-col">
       {/* Main Navigation Group */}
       <nav className="space-y-1">
-        {navItems.map((item) => (
+        {currentNavItems.map((item) => (
           <Link
             key={item.label}
             to={item.path}
