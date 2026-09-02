@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { FiHome, FiUsers, FiCompass, FiCalendar, FiMessageSquare, FiBell, FiSettings, FiLogOut, FiBriefcase, FiAward } from "react-icons/fi";
+import { FiHome, FiUsers, FiCompass, FiCalendar, FiMessageSquare, FiBell, FiSettings, FiLogOut, FiBriefcase, FiAward, FiShield } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
 
 const navItems = [
@@ -14,7 +14,7 @@ const navItems = [
 ];
 
 const LeftSidebar = () => {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
@@ -37,6 +37,19 @@ const LeftSidebar = () => {
             <span className="hidden lg:block">{item.label}</span>
           </Link>
         ))}
+        {user?.role === "admin" && (
+          <Link
+            to="/admin"
+            className={`flex items-center gap-4 px-4 py-3 text-sm font-medium transition-colors ${
+              isActive("/admin")
+                ? "text-brand border-l-2 border-brand font-semibold"
+                : "text-slate-500 border-l-2 border-transparent hover:text-ink hover:bg-slate-50"
+            }`}
+          >
+            <FiShield size={20} className={isActive("/admin") ? "text-brand" : "text-slate-500"} />
+            <span className="hidden lg:block">Admin Dashboard</span>
+          </Link>
+        )}
       </nav>
 
       {/* Settings & Logout separated by subtle divider */}

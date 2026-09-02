@@ -20,6 +20,7 @@ import badgeRoutes from "./routes/badgeRoutes.js";
 import dailyTaskRoutes from "./routes/dailyTaskRoutes.js";
 import challengeRoutes from "./routes/challengeRoutes.js";
 import leaderboardRoutes from "./routes/leaderboardRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -112,6 +113,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/departments", departmentRoutes);
+app.use("/api/admin", adminRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api/clubs", clubRoutes);

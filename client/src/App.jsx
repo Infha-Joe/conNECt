@@ -12,6 +12,7 @@ import CommunityHub from "./pages/CommunityHub";
 import Clubs from "./pages/Clubs";
 import ClubDetail from "./pages/ClubDetail";
 import Gamification from "./pages/Gamification";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   const [showAnimation, setShowAnimation] = useState(() => {
@@ -95,6 +96,14 @@ function App() {
         element={
           <ProtectedRoute>
             <Gamification />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <AdminDashboard />
           </ProtectedRoute>
         }
       />
