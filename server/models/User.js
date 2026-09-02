@@ -67,6 +67,7 @@ const userSchema = new mongoose.Schema(
       },
     ],
     streak: { type: Number, default: 0 },
+    lastStreakDate: { type: String, default: "" }, // YYYY-MM-DD of last streak-counted day
     xpPoints: { type: Number, default: 0 },
     // --- Teacher Specific Fields ---
     designation: { type: String, trim: true },

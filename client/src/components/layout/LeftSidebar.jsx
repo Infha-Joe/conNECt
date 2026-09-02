@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { FiHome, FiUsers, FiCompass, FiCalendar, FiMessageSquare, FiBell, FiSettings, FiLogOut, FiBriefcase } from "react-icons/fi";
+import { FiHome, FiUsers, FiCompass, FiCalendar, FiMessageSquare, FiBell, FiSettings, FiLogOut, FiBriefcase, FiAward } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
 
 const navItems = [
@@ -7,7 +7,8 @@ const navItems = [
   { icon: FiUsers, label: "Network", path: "#" }, 
   { icon: FiCompass, label: "Explore", path: "#" }, 
   { icon: FiCalendar, label: "Events", path: "#" }, 
-  { icon: FiBriefcase, label: "Mentorship", path: "/mentorship" }, 
+  { icon: FiBriefcase, label: "Mentorship", path: "/mentorship" },
+  { icon: FiAward, label: "Achievements", path: "/gamification" },
   { icon: FiMessageSquare, label: "Messages", path: "#" }, 
   { icon: FiBell, label: "Notifications", path: "#" }, 
 ];

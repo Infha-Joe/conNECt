@@ -16,6 +16,10 @@ import clubRoutes from "./routes/clubRoutes.js";
 import pollRoutes from "./routes/pollRoutes.js";
 import suggestionRoutes from "./routes/suggestionRoutes.js";
 import communityRequestRoutes from "./routes/communityRequestRoutes.js";
+import badgeRoutes from "./routes/badgeRoutes.js";
+import dailyTaskRoutes from "./routes/dailyTaskRoutes.js";
+import challengeRoutes from "./routes/challengeRoutes.js";
+import leaderboardRoutes from "./routes/leaderboardRoutes.js";
 
 dotenv.config();
 connectDB();
@@ -114,6 +118,10 @@ app.use("/api/clubs", clubRoutes);
 app.use("/api/polls", pollRoutes);
 app.use("/api/suggestions", suggestionRoutes);
 app.use("/api/community-requests", communityRequestRoutes);
+app.use("/api/badges", badgeRoutes);
+app.use("/api/daily-tasks", dailyTaskRoutes);
+app.use("/api/challenges", challengeRoutes);
+app.use("/api/leaderboard", leaderboardRoutes);
 
 // 404 + error handling
 app.use(notFound);

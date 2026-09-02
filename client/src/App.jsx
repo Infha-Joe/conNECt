@@ -11,6 +11,7 @@ import ActiveMentorship from "./pages/ActiveMentorship";
 import CommunityHub from "./pages/CommunityHub";
 import Clubs from "./pages/Clubs";
 import ClubDetail from "./pages/ClubDetail";
+import Gamification from "./pages/Gamification";
 
 function App() {
   const [showAnimation, setShowAnimation] = useState(() => {
@@ -86,6 +87,14 @@ function App() {
         element={
           <ProtectedRoute>
             <ClubDetail />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/gamification"
+        element={
+          <ProtectedRoute>
+            <Gamification />
           </ProtectedRoute>
         }
       />
