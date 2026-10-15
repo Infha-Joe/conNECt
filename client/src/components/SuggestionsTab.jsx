@@ -6,8 +6,6 @@ import { timeAgo } from "../utils/timeAgo";
 
 const targetOptions = [
   { value: "platform", label: "Platform" },
-  { value: "event", label: "Event" },
-  { value: "club", label: "Club" },
   { value: "facility", label: "Facility" },
   { value: "other", label: "Other" },
 ];
@@ -45,7 +43,7 @@ const SuggestionsTab = () => {
     <div>
       <button
         onClick={() => setShowCreate((s) => !s)}
-        className="flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-parchment transition hover:bg-ink-light"
+        className="flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-ink-light"
       >
         <Plus size={16} />
         Share suggestion or feedback
@@ -89,7 +87,7 @@ const SuggestionsTab = () => {
             className="w-full rounded-lg border border-ink/15 px-3 py-2 text-sm outline-none focus:border-brass"
           />
 
-          <button type="submit" className="rounded-lg bg-ink px-4 py-1.5 text-sm font-semibold text-parchment hover:bg-ink-light">
+          <button type="submit" className="rounded-lg bg-ink px-4 py-1.5 text-sm font-semibold text-white hover:bg-ink-light">
             Submit
           </button>
         </form>

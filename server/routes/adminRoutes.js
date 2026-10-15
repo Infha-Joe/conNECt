@@ -1,20 +1,19 @@
 import express from "express";
 import {
   getAnalytics,
-  getAllUsers,
-  setUserVerification,
-  setUserRole,
+  getUsers,
+  verifyUser,
+  updateUserRole,
 } from "../controllers/adminController.js";
-import { protect } from "../middleware/auth.js";
-import { authorize } from "../middleware/roleCheck.js";
+import { protect, restrictTo } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.use(protect, authorize("admin"));
+router.use(protect, restrictTo("admin"));
 
 router.get("/analytics", getAnalytics);
-router.get("/users", getAllUsers);
-router.put("/users/:id/verify", setUserVerification);
-router.put("/users/:id/role", setUserRole);
+router.get("/users", getUsers);
+router.put("/users/:id/verify", verifyUser);
+router.put("/users/:id/role", updateUserRole);
 
 export default router;

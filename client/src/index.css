@@ -1,33 +1,94 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply font-body bg-slate-50 text-ink antialiased;
+@layer base {
+  body {
+    @apply font-sans bg-background text-ink antialiased selection:bg-primary/20 selection:text-primary;
+  }
 }
 
-::selection {
-  @apply bg-brand/20 text-brand;
+@layer utilities {
+  .glass-panel {
+    @apply bg-surface border border-border shadow-sm;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
-/* Custom Scrollbar for a premium feel */
+/* Minimalist Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+  @apply bg-border rounded-full hover:bg-ink-light transition-colors;
 }
 
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+/* Base UI Overrides */
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white font-semibold py-2.5 px-5 rounded-md hover:bg-primary-hover transition-colors shadow-sm text-sm;
+  }
+  .btn-secondary {
+    @apply bg-surface text-ink border border-border font-semibold py-2.5 px-5 rounded-md hover:bg-background transition-colors text-sm;
+  }
+  .btn-danger {
+    @apply bg-danger text-white font-semibold py-2.5 px-5 rounded-md transition-colors text-sm;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-ink font-semibold py-2.5 px-5 rounded-md hover:bg-background transition-colors text-sm;
+  }
+  
+  .card-standard {
+    @apply bg-surface border border-border rounded-lg p-6 shadow-sm;
+  }
 }
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+
+/* Landing Page Animations */
+@media (prefers-reduced-motion: no-preference) {
+  .anim-slide-right {
+    animation: slideRight 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .anim-slide-left {
+    animation: slideLeft 700ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+}
+
+@keyframes slideRight {
+  0% { opacity: 0; transform: translateX(-40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideLeft {
+  0% { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Fallback for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .anim-slide-right, .anim-slide-left {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+.opacity-0-init {
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .opacity-0-init {
+    opacity: 1;
+  }
 }

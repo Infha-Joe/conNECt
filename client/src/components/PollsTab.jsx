@@ -56,7 +56,7 @@ const PollsTab = () => {
     <div>
       <button
         onClick={() => setShowCreate((s) => !s)}
-        className="flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-parchment transition hover:bg-ink-light"
+        className="flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-ink-light"
       >
         <Plus size={16} />
         New poll
@@ -92,7 +92,7 @@ const PollsTab = () => {
             + Add option
           </button>
           {error && <p className="text-sm text-red-600">{error}</p>}
-          <button type="submit" className="rounded-lg bg-ink px-4 py-1.5 text-sm font-semibold text-parchment hover:bg-ink-light">
+          <button type="submit" className="rounded-lg bg-ink px-4 py-1.5 text-sm font-semibold text-white hover:bg-ink-light">
             Post poll
           </button>
         </form>

@@ -8,6 +8,7 @@ import {
   rejectRequest,
   getActiveMentorships,
   getMentorshipDetails,
+  getMyClasses,
   createClass,
   getClasses,
   getChatHistory,
@@ -31,6 +32,7 @@ router.get("/:id", getMentorshipDetails);
 router.patch("/:id/close", closeMentorship);
 
 router.post("/:id/classes", createClass);
+router.get("/user/classes", getMyClasses);
 router.get("/:id/classes", getClasses);
 
 router.get("/:id/chat", getChatHistory);

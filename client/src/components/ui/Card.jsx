@@ -1,7 +1,11 @@
-const Card = ({ children, className = "", noPadding = false }) => {
+﻿import React from 'react';
+
+const Card = ({ children, className = "", noPadding = false, hover = false }) => {
   return (
-    <div className={`overflow-hidden rounded-xl border border-slate-200 bg-white ${className}`}>
-      {!noPadding ? <div className="p-5">{children}</div> : children}
+    <div 
+      className={`bg-surface border border-border rounded-lg shadow-sm transition-all duration-300 ${hover ? 'hover:-translate-y-1 hover:shadow-hover hover:border-primary/30' : ''} ${className}`}
+    >
+      {!noPadding ? <div className="p-6">{children}</div> : children}
     </div>
   );
 };

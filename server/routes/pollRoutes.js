@@ -1,6 +1,6 @@
 import express from "express";
 import { createPoll, getPolls, voteOnPoll, deletePoll } from "../controllers/pollController.js";
-import { protect } from "../middleware/auth.js";
+import { protect, restrictTo } from "../middleware/auth.js";
 
 const router = express.Router();
 

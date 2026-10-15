@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 850" width="100%" height="100%" style="background:#ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+  <defs>
+    <style>
+      .entity { fill: #f1f5f9; stroke: #0f172a; stroke-width: 2; rx: 3; }
+      .entity-title { font-weight: bold; font-size: 13px; fill: #0f172a; text-anchor: middle; }
+      .rel { fill: #ffffff; stroke: #0f172a; stroke-width: 1.5; }
+      .rel-title { font-size: 11px; font-weight: 600; fill: #0f172a; text-anchor: middle; }
+      .attr { fill: #ffffff; stroke: #475569; stroke-width: 1; rx: 12; }
+      .attr-title { font-size: 9px; fill: #1e293b; text-anchor: middle; }
+      .attr-pk { font-weight: bold; text-decoration: underline; }
+      .line { stroke: #334155; stroke-width: 1.3; }
+      .card { font-size: 10px; font-weight: bold; fill: #dc2626; }
+    </style>
+  </defs>
+
+  <!-- CENTER: USER -->
+  <g transform="translate(480, 360)">
+    <rect width="140" height="55" class="entity" />
+    <text x="70" y="32" class="entity-title">User</text>
+  </g>
+
+  <!-- USER Attributes -->
+  <g transform="translate(360, 290)"><rect width="80" height="24" class="attr"/><text x="40" y="16" class="attr-title attr-pk">userId (PK)</text></g>
+  <line x1="440" y1="305" x2="490" y2="360" class="line" />
+
+  <g transform="translate(360, 330)"><rect width="80" height="24" class="attr"/><text x="40" y="16" class="attr-title">name</text></g>
+  <line x1="440" y1="342" x2="480" y2="370" class="line" />
+
+  <g transform="translate(360, 370)"><rect width="80" height="24" class="attr"/><text x="40" y="16" class="attr-title">email</text></g>
+  <line x1="440" y1="382" x2="480" y2="385" class="line" />
+
+  <g transform="translate(360, 410)"><rect width="80" height="24" class="attr"/><text x="40" y="16" class="attr-title">role</text></g>
+  <line x1="440" y1="422" x2="480" y2="400" class="line" />
+
+  <g transform="translate(360, 450)"><rect width="80" height="24" class="attr"/><text x="40" y="16" class="attr-title">collegeId</text></g>
+  <line x1="440" y1="462" x2="495" y2="415" class="line" />
+
+  <!-- POST ENTITY (Left) -->
+  <g transform="translate(140, 220)">
+    <rect width="130" height="50" class="entity" />
+    <text x="65" y="30" class="entity-title">Post</text>
+  </g>
+  <!-- Relationship: User creates Post -->
+  <polygon points="360,245 400,220 440,245 400,270" class="rel" />
+  <text x="400" y="249" class="rel-title">creates</text>
+  <line x1="270" y1="245" x2="360" y2="245" class="line" />
+  <line x1="440" y1="245" x2="520" y2="360" class="line" />
+  <text x="280" y="235" class="card">N</text>
+  <text x="495" y="340" class="card">1</text>
+
+  <!-- Post Attributes -->
+  <g transform="translate(30, 180)"><rect width="80" height="22" class="attr"/><text x="40" y="15" class="attr-title attr-pk">postId (PK)</text></g>
+  <line x1="110" y1="195" x2="150" y2="220" class="line" />
+  <g transform="translate(30, 220)"><rect width="80" height="22" class="attr"/><text x="40" y="15" class="attr-title">content</text></g>
+  <line x1="110" y1="231" x2="140" y2="240" class="line" />
+  <g transform="translate(30, 260)"><rect width="80" height="22" class="attr"/><text x="40" y="15" class="attr-title">mediaUrl</text></g>
+  <line x1="110" y1="271" x2="140" y2="255" class="line" />
+
+  <!-- COMMENT ENTITY (Bottom Left) -->
+  <g transform="translate(140, 520)">
+    <rect width="130" height="50" class="entity" />
+    <text x="65" y="30" class="entity-title">Comment</text>
+  </g>
+  <polygon points="175,410 205,385 235,410 205,435" class="rel" />
+  <text x="205" y="414" class="rel-title">has</text>
+  <line x1="205" y1="270" x2="205" y2="385" class="line" />
+  <line x1="205" y1="435" x2="205" y2="520" class="line" />
+  <text x="215" y="290" class="card">1</text>
+  <text x="215" y="500" class="card">N</text>
+
+  <!-- PROJECT ENTITY (Top Center) -->
+  <g transform="translate(480, 80)">
+    <rect width="140" height="50" class="entity" />
+    <text x="70" y="30" class="entity-title">Project</text>
+  </g>
+  <polygon points="520,225 550,200 580,225 550,250" class="rel" />
+  <text x="550" y="229" class="rel-title">leads</text>
+  <line x1="550" y1="130" x2="550" y2="200" class="line" />
+  <line x1="550" y1="250" x2="550" y2="360" class="line" />
+  <text x="560" y="150" class="card">N</text>
+  <text x="560" y="340" class="card">1</text>
+
+  <!-- ACADEMIC CLASS ENTITY (Right) -->
+  <g transform="translate(830, 220)">
+    <rect width="150" height="50" class="entity" />
+    <text x="75" y="30" class="entity-title">AcademicClass</text>
+  </g>
+  <polygon points="690,265 725,240 760,265 725,290" class="rel" />
+  <text x="725" y="269" class="rel-title">teaches</text>
+  <line x1="610" y1="365" x2="690" y2="265" class="line" />
+  <line x1="760" y1="265" x2="830" y2="250" class="line" />
+  <text x="635" y="350" class="card">1</text>
+  <text x="810" y="240" class="card">N</text>
+
+  <!-- ACADEMIC RECORD (Bottom Right) -->
+  <g transform="translate(830, 480)">
+    <rect width="150" height="50" class="entity" />
+    <text x="75" y="30" class="entity-title">AcademicRecord</text>
+  </g>
+  <polygon points="875,370 905,345 935,370 905,395" class="rel" />
+  <text x="905" y="374" class="rel-title">contains</text>
+  <line x1="905" y1="270" x2="905" y2="345" class="line" />
+  <line x1="905" y1="395" x2="905" y2="480" class="line" />
+  <text x="915" y="295" class="card">1</text>
+  <text x="915" y="465" class="card">N</text>
+
+  <!-- MENTOR REQUEST & MENTORSHIP (Bottom Center) -->
+  <g transform="translate(480, 640)">
+    <rect width="140" height="50" class="entity" />
+    <text x="70" y="30" class="entity-title">MentorRequest</text>
+  </g>
+  <polygon points="520,525 550,500 580,525 550,550" class="rel" />
+  <text x="550" y="529" class="rel-title">requests</text>
+  <line x1="550" y1="415" x2="550" y2="500" class="line" />
+  <line x1="550" y1="550" x2="550" y2="640" class="line" />
+  <text x="560" y="435" class="card">1</text>
+  <text x="560" y="625" class="card">N</text>
+
+  <!-- MESSAGE ENTITY (Far Bottom Right) -->
+  <g transform="translate(730, 640)">
+    <rect width="130" height="50" class="entity" />
+    <text x="65" y="30" class="entity-title">Message</text>
+  </g>
+  <polygon points="660,560 690,535 720,560 690,585" class="rel" />
+  <text x="690" y="564" class="rel-title">sends</text>
+  <line x1="605" y1="415" x2="660" y2="560" class="line" />
+  <line x1="720" y1="560" x2="735" y2="640" class="line" />
+  <text x="620" y="445" class="card">1</text>
+  <text x="740" y="625" class="card">N</text>
+
+</svg>

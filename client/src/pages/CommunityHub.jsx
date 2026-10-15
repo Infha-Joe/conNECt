@@ -16,7 +16,7 @@ const CommunityHub = () => {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-2xl">
+      <div className="w-full">
         <h1 className="font-display text-2xl font-medium text-ink">Community Hub</h1>
         <p className="mt-1 text-sm text-slate-text">Polls, feedback, and helping each other out around campus.</p>
 
@@ -24,7 +24,7 @@ const CommunityHub = () => {
           {tabs.map(({ id, label, icon: Icon }) => (
             <button key={id} onClick={() => setActiveTab(id)}
               className={`flex flex-1 items-center justify-center gap-1.5 rounded-md py-2 text-xs font-medium transition sm:text-sm ${
-                activeTab === id ? "bg-ink text-parchment" : "text-slate-text hover:bg-ink/5 hover:text-ink"
+                activeTab === id ? "bg-ink text-white" : "text-slate-text hover:bg-ink/5 hover:text-ink"
               }`}>
               <Icon size={15} />
               <span className="hidden sm:inline">{label}</span>

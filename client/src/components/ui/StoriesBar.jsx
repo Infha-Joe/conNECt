@@ -7,7 +7,7 @@ const StoriesBar = () => {
   const stories = [
     { id: 1, name: "Dr. Smith", avatar: null, active: true },
     { id: 2, name: "Alumni John", avatar: null, active: true },
-    { id: 3, name: "Tech Club", avatar: null, active: true },
+    { id: 3, name: "Campus Spotlight", avatar: null, active: true },
     { id: 4, name: "Jane Doe", avatar: null, active: false },
   ];
 

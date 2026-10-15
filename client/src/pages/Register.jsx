@@ -1,3 +1,10 @@
+/* =========================================================================
+ * ❄️ AUTHENTICATION IS FROZEN ❄️
+ * Do not modify authentication files or password/JWT/email-verification logic 
+ * while implementing unrelated features.
+ * Reuse the existing auth system.
+ * ========================================================================= */
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -29,6 +36,7 @@ const Register = () => {
   const [departments, setDepartments] = useState([]);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -36,7 +44,7 @@ const Register = () => {
     api
       .get("/departments")
       .then(({ data }) => setDepartments(data.departments))
-      .catch(() => setDepartments([]));
+      .catch((err) => { console.error("Failed to load departments:", err); setDepartments([]); });
   }, []);
 
   const handleChange = (e) => {
@@ -54,29 +62,37 @@ const Register = () => {
     setSubmitting(true);
     try {
       const payload = { 
+        accountType: role === "alumni" ? "alumni_new" : role,
         name: form.name, 
         email: form.email, 
         password: form.password, 
         role 
       };
 
+      const selectedDept = departments.find(d => d._id === form.department);
+      const mappedDepartment = selectedDept ? selectedDept.code : form.department;
+
       if (role === "student") {
         payload.collegeId = form.collegeId;
         payload.year = form.year;
-        payload.department = form.department;
+        payload.department = mappedDepartment;
       } else if (role === "teacher") {
         payload.designation = form.designation;
-        payload.department = form.department;
+        payload.facultyId = form.designation; // Map designation to facultyId to satisfy backend
+        payload.department = mappedDepartment;
       } else if (role === "alumni") {
         payload.batch = form.batch;
-        payload.department = form.department;
+        // Extract graduationYear from batch string (e.g. 2020-2024 -> 2024)
+        const batchParts = form.batch.split("-");
+        payload.graduationYear = batchParts.length > 1 ? parseInt(batchParts[1].trim()) : parseInt(form.batch.trim());
+        payload.department = mappedDepartment;
         payload.degree = form.degree;
         payload.currentCompany = form.currentCompany;
         payload.currentRole = form.currentRole;
       }
 
-      await register(payload);
-      navigate("/dashboard");
+      const res = await register(payload);
+      setSuccessMessage(res?.data?.message || "Registration successful! Please check your email to verify your account.");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed. Please try again.");
     } finally {
@@ -84,22 +100,46 @@ const Register = () => {
     }
   };
 
-  const inputStyles = "w-full rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-ink outline-none transition-all focus:border-brand focus:bg-white focus:ring-1 focus:ring-brand";
-  const labelStyles = "mb-1.5 block text-sm font-semibold text-ink";
+  const inputStyles = "w-full rounded-xl border-2 border-border bg-background px-4 py-3 text-sm text-primary-dark outline-none transition-all focus:border-primary focus:bg-surface focus:ring-1 focus:ring-primary placeholder:text-border/80 font-medium shadow-sm";
+  const labelStyles = "mb-1.5 block text-xs font-bold text-primary-dark uppercase tracking-wider";
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 font-sans py-12">
-      <div className="w-full max-w-lg p-6">
+    <div className="flex min-h-screen items-center justify-center bg-background relative font-sans p-4 py-12">
+      <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary-light/40 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="w-full max-w-lg p-8 sm:p-10 shadow-[0_20px_50px_-12px_rgba(23,59,58,0.15)] border border-border bg-surface rounded-2xl relative z-10">
         <div className="mb-10 text-center">
-          <p className="font-display text-3xl font-bold tracking-tight text-ink">
-            con<span className="text-brand">NEC</span>t
+          <p className="font-display text-3xl font-bold tracking-tight text-primary-dark">
+            con<span className="text-primary">NEC</span>t
           </p>
-          <h1 className="mt-4 font-body text-2xl font-bold text-ink">Join the network</h1>
-          <p className="mt-1 text-sm text-slate-500">Create your professional profile</p>
+          <h1 className="mt-4 font-body text-2xl font-bold text-primary-dark">Join the network</h1>
+          <p className="mt-1 text-sm text-primary-dark-light">Create your professional profile</p>
         </div>
 
-        <Card className="p-8">
-          <div className="mb-8 flex space-x-1 rounded-lg bg-slate-50 p-1 border border-slate-200">
+        
+        {successMessage ? (
+          <Card className="p-8 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-4">
+              <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-ink mb-2">Check your email</h2>
+            <p className="text-ink-light mb-6">
+              We've sent a verification link to:<br/>
+              <span className="font-semibold text-ink">{form.email}</span>
+            </p>
+            <div className="bg-surface border border-border rounded-lg p-4 mb-6 text-sm text-ink-light text-left">
+              <p className="mb-2">Please check your inbox and click <strong>Activate Account</strong> to verify your conNECt account.</p>
+              <p>Didn't receive the email? Check your spam/junk folder.</p>
+            </div>
+            <Link to="/login" className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-primary text-white font-semibold hover:bg-primary/90 transition-colors">
+              Back to Login
+            </Link>
+          </Card>
+        ) : (
+          <Card className="p-8">
+
+          <div className="mb-8 flex space-x-1 rounded-lg bg-background p-1 border border-border">
             {ROLES.map((r) => (
               <button
                 key={r.value}
@@ -107,8 +147,8 @@ const Register = () => {
                 onClick={() => handleRoleChange(r.value)}
                 className={`flex-1 rounded-md py-2.5 text-sm font-semibold transition-all ${
                   role === r.value
-                    ? "bg-white text-ink shadow-sm ring-1 ring-slate-200"
-                    : "text-slate-500 hover:text-ink hover:bg-slate-100"
+                    ? "bg-white text-primary-dark shadow-sm ring-1 ring-slate-200"
+                    : "text-primary-dark-light hover:text-primary-dark hover:bg-background"
                 }`}
               >
                 {r.label}
@@ -158,7 +198,7 @@ const Register = () => {
               </div>
             </div>
 
-            <hr className="border-slate-200 my-6" />
+            <hr className="border-border my-6" />
 
             <div className="space-y-5">
               {role === "student" && (
@@ -310,7 +350,7 @@ const Register = () => {
             </div>
 
             {error && (
-              <div className="rounded-lg bg-red-50 p-3 text-sm font-medium text-red-700">
+              <div className="rounded-lg bg-danger/10 p-3 text-sm font-medium text-danger">
                 {error}
               </div>
             )}
@@ -322,15 +362,18 @@ const Register = () => {
             >
               {submitting ? "Creating account…" : "Join conNECt"}
             </Button>
-          </form>
+                    </form>
         </Card>
+        )}
         
-        <p className="mt-8 text-center text-sm font-medium text-slate-500">
-          Already have an account?{" "}
-          <Link to="/login" className="font-bold text-brand hover:underline">
-            Sign in here
-          </Link>
-        </p>
+        {!successMessage && (
+          <p className="mt-8 text-center text-sm font-medium text-primary-dark-light">
+            Already have an account?{" "}
+            <Link to="/login" className="font-bold text-primary hover:underline">
+              Sign in here
+            </Link>
+          </p>
+        )}
       </div>
     </div>
   );

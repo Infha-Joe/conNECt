@@ -4,6 +4,11 @@ import Mentorship from "../models/Mentorship.js";
 import MentorshipClass from "../models/MentorshipClass.js";
 import MentorshipMessage from "../models/MentorshipMessage.js";
 import User from "../models/User.js";
+import Project from "../models/Project.js";
+import ProjectMember from "../models/ProjectMember.js";
+import Workspace from "../models/Workspace.js";
+import Notification from "../models/Notification.js";
+import { emitToUser } from "../services/socket.service.js";
 
 // @desc    Check if a mentorship is expired and update status
 const checkAndExpireMentorship = async (mentorship) => {
@@ -16,18 +21,18 @@ const checkAndExpireMentorship = async (mentorship) => {
 
 // @desc    Verify if user is part of mentorship
 const isUserInMentorship = (mentorship, userId) => {
-  const mentorId = mentorship.mentor._id || mentorship.mentor;
-  if (mentorId.toString() === userId.toString()) return true;
+  if (!mentorship || !userId) return false;
+  const uid = userId.toString();
+  const mentorId = (mentorship.mentor?._id || mentorship.mentor)?.toString();
+  if (mentorId === uid) return true;
   
-  if (mentorship.requestType === "individual") {
-    const menteeId = mentorship.mentee?._id || mentorship.mentee;
-    if (menteeId?.toString() === userId.toString()) return true;
-  }
+  const menteeId = (mentorship.mentee?._id || mentorship.mentee)?.toString();
+  if (menteeId === uid) return true;
   
-  if (mentorship.requestType === "group" && mentorship.groupMembers) {
+  if (mentorship.groupMembers && Array.isArray(mentorship.groupMembers)) {
     return mentorship.groupMembers.some(member => {
-      const memberId = member._id || member;
-      return memberId.toString() === userId.toString();
+      const memberId = (member?._id || member)?.toString();
+      return memberId === uid;
     });
   }
   return false;
@@ -35,7 +40,7 @@ const isUserInMentorship = (mentorship, userId) => {
 
 // @desc    Get eligible mentorship providers (search)
 // @route   GET /api/mentorship/providers
-// @access  Private (Students)
+// @access  Private
 export const getMentorshipProviders = asyncHandler(async (req, res) => {
   const { search = "" } = req.query;
 
@@ -53,8 +58,9 @@ export const getMentorshipProviders = asyncHandler(async (req, res) => {
   }
 
   const providers = await User.find(filter)
-    .select("name role profilePhoto skills designation currentRole")
-    .limit(20);
+    .select("name role profilePhoto skills designation currentRole department")
+    .populate("department", "name code")
+    .limit(50);
 
   res.json(providers);
 });
@@ -63,88 +69,79 @@ export const getMentorshipProviders = asyncHandler(async (req, res) => {
 // @route   POST /api/mentorship/request
 // @access  Private (Students/Groups)
 export const createMentorRequest = asyncHandler(async (req, res) => {
-  const { mentorId, requestType, groupName, groupMembers, goals, message, requestedDuration } = req.body;
+  const { mentorId, projectId, goals, message, requestedDuration } = req.body;
 
   if (req.user.role !== "student") {
     res.status(403);
     throw new Error("Only students can request mentorship");
   }
 
-  // 1. Verify Mentor Eligibility
+  if (!projectId) {
+    res.status(400);
+    throw new Error("A project must be selected to request a mentor");
+  }
+
+  // Verify Project
+  const project = await Project.findById(projectId);
+  if (!project) {
+    res.status(404);
+    throw new Error("Project not found");
+  }
+
+  if (project.leader.toString() !== req.user._id.toString()) {
+    res.status(403);
+    throw new Error("Only the project leader can request a mentor");
+  }
+
+  if (project.mentor) {
+    res.status(400);
+    throw new Error("This project already has an active mentor");
+  }
+
+  // Verify Mentor
   const mentor = await User.findById(mentorId);
   if (!mentor || (mentor.role !== "teacher" && mentor.role !== "alumni")) {
     res.status(400);
-    throw new Error("Selected user is not eligible to be a mentor/teacher");
+    throw new Error("Selected user is not eligible to be a mentor");
   }
 
-  // 2. Validate Group Request
-  let finalGroupMembers = [];
-  if (requestType === "group") {
-    if (!groupMembers || !Array.isArray(groupMembers)) {
-      res.status(400);
-      throw new Error("Group members are required for a group request");
-    }
-
-    // Ensure the leader is always in the group
-    const memberSet = new Set(groupMembers);
-    memberSet.add(req.user._id.toString());
-    finalGroupMembers = Array.from(memberSet);
-
-    // Verify all members exist and are students
-    const membersInDb = await User.find({ _id: { $in: finalGroupMembers } });
-    if (membersInDb.length !== finalGroupMembers.length) {
-      res.status(400);
-      throw new Error("One or more selected students do not exist");
-    }
-    const nonStudents = membersInDb.filter(u => u.role !== "student");
-    if (nonStudents.length > 0) {
-      res.status(400);
-      throw new Error("Only students can be part of a group mentorship request");
-    }
-  }
-
-  // 3. Prevent duplicate pending requests
+  // Prevent duplicate pending requests for this specific project and mentor
   const existingRequest = await MentorRequest.findOne({
-    requester: req.user._id,
+    project: projectId,
     mentor: mentorId,
     status: "pending"
   });
 
   if (existingRequest) {
     res.status(400);
-    throw new Error("You already have a pending request with this mentor");
+    throw new Error("You already have a pending request with this mentor for this project");
   }
 
-  // Check for active mentorship
-  const activeMentorship = await Mentorship.findOne({
-    status: "active",
-    mentor: mentorId,
-    $or: [
-      { mentee: req.user._id },
-      { groupMembers: req.user._id }
-    ]
-  });
-
-  if (activeMentorship) {
-    // Make sure it's actually active by checking date
-    const verifiedMentorship = await checkAndExpireMentorship(activeMentorship);
-    if (verifiedMentorship.status === "active") {
-      res.status(400);
-      throw new Error("You already have an active mentorship with this mentor");
-    }
-  }
+  const projectMembers = await ProjectMember.find({ project: projectId });
+  const isGroup = projectMembers.length > 1;
+  const groupMembers = isGroup ? projectMembers.filter(pm => pm.user.toString() !== req.user._id.toString()).map(pm => pm.user) : [];
 
   const mentorRequest = await MentorRequest.create({
     requester: req.user._id,
     mentor: mentorId,
-    requestType: requestType || "individual",
-    groupName: requestType === "group" ? groupName : undefined,
-    groupMembers: requestType === "group" ? finalGroupMembers : [],
-    goals,
-    message,
-    requestedDuration,
+    project: projectId,
+    requestType: isGroup ? "group" : "individual",
+    groupName: isGroup ? project.title : undefined,
+    groupMembers: isGroup ? groupMembers : undefined,
+    goals: goals || "Project guidance",
+    message: message || "",
+    requestedDuration: Number(requestedDuration) || 30,
     status: "pending"
   });
+
+  const notification = await Notification.create({
+    user: mentorId,
+    type: "mentor_request",
+    title: "New Mentor Request",
+    message: `${req.user.name} requested you as a mentor for ${project.title}.`,
+    relatedId: mentorRequest._id
+  });
+  emitToUser(mentorId.toString(), "notification:new", notification);
 
   res.status(201).json(mentorRequest);
 });
@@ -154,7 +151,8 @@ export const createMentorRequest = asyncHandler(async (req, res) => {
 // @access  Private (Students)
 export const getOutgoingRequests = asyncHandler(async (req, res) => {
   const requests = await MentorRequest.find({ requester: req.user._id })
-    .populate("mentor", "name profilePhoto department designation")
+    .populate("mentor", "name profilePhoto department designation role currentRole")
+    .populate("project", "title")
     .sort("-createdAt");
   res.json(requests);
 });
@@ -169,8 +167,8 @@ export const getIncomingRequests = asyncHandler(async (req, res) => {
   }
 
   const requests = await MentorRequest.find({ mentor: req.user._id, status: "pending" })
-    .populate("requester", "name profilePhoto department year")
-    .populate("groupMembers", "name")
+    .populate("requester", "name profilePhoto department year role")
+    .populate("project", "title description technologies")
     .sort("-createdAt");
   res.json(requests);
 });
@@ -192,12 +190,19 @@ export const acceptRequest = asyncHandler(async (req, res) => {
     throw new Error("Not authorized to accept this request");
   }
 
+  if (request.status === "accepted") {
+    // If already accepted, return existing active mentorship
+    const existing = await Mentorship.findOne({ request: request._id });
+    if (existing) return res.json(existing);
+  }
+
   if (request.status !== "pending") {
     res.status(400);
     throw new Error("Request is not pending");
   }
 
-  if (!durationDays || durationDays <= 0) {
+  const days = Number(durationDays) || request.requestedDuration || 30;
+  if (days <= 0) {
     res.status(400);
     throw new Error("Valid duration is required");
   }
@@ -205,22 +210,67 @@ export const acceptRequest = asyncHandler(async (req, res) => {
   request.status = "accepted";
   await request.save();
 
+  // Update Project status and mentor
+  if (request.project) {
+    const project = await Project.findById(request.project);
+    if (project) {
+      project.mentor = req.user._id;
+      project.status = "in_progress";
+      if (!project.startDate) project.startDate = new Date();
+      await project.save();
+    }
+  }
+
   const startDate = new Date();
   const endDate = new Date(startDate);
-  endDate.setDate(endDate.getDate() + Number(durationDays));
+  endDate.setDate(endDate.getDate() + days);
 
-  const mentorship = await Mentorship.create({
-    mentor: req.user._id,
-    mentee: request.requestType === "individual" ? request.requester : undefined,
-    requestType: request.requestType,
-    groupName: request.groupName,
-    groupMembers: request.groupMembers,
-    request: request._id,
-    status: "active",
-    startDate,
-    endDate,
-    durationDays
+  // Check if Mentorship already exists to prevent duplicate on retry
+  let mentorship = await Mentorship.findOne({ request: request._id });
+  if (!mentorship) {
+    mentorship = await Mentorship.create({
+      mentor: req.user._id,
+      mentee: request.requester,
+      project: request.project,
+      requestType: request.requestType,
+      groupName: request.groupName,
+      groupMembers: request.groupMembers,
+      request: request._id,
+      status: "active",
+      startDate,
+      endDate,
+      durationDays: days
+    });
+  }
+
+  // Also create/sync Workspace
+  if (request.project) {
+    let workspace = await Workspace.findOne({ project: request.project });
+    if (!workspace) {
+      workspace = await Workspace.create({
+        project: request.project,
+        mentor: req.user._id,
+        startDate,
+        endDate,
+        status: "active"
+      });
+    } else {
+      workspace.mentor = req.user._id;
+      workspace.startDate = startDate;
+      workspace.endDate = endDate;
+      workspace.status = "active";
+      await workspace.save();
+    }
+  }
+
+  const notification = await Notification.create({
+    user: request.requester,
+    type: "mentor_response",
+    title: "Mentor Request Accepted",
+    message: `${req.user.name} accepted your mentor request.`,
+    relatedId: mentorship._id
   });
+  emitToUser(request.requester.toString(), "notification:new", notification);
 
   res.json(mentorship);
 });
@@ -244,6 +294,15 @@ export const rejectRequest = asyncHandler(async (req, res) => {
   request.status = "rejected";
   await request.save();
 
+  const notification = await Notification.create({
+    user: request.requester,
+    type: "mentor_response",
+    title: "Mentor Request Rejected",
+    message: `${req.user.name} declined your mentor request.`,
+    relatedId: request._id
+  });
+  emitToUser(request.requester.toString(), "notification:new", notification);
+
   res.json({ message: "Request rejected" });
 });
 
@@ -260,9 +319,10 @@ export const getActiveMentorships = asyncHandler(async (req, res) => {
   };
 
   let mentorships = await Mentorship.find(query)
-    .populate("mentor", "name profilePhoto designation currentRole")
-    .populate("mentee", "name profilePhoto year")
-    .populate("groupMembers", "name profilePhoto")
+    .populate("mentor", "name profilePhoto designation currentRole role department")
+    .populate("mentee", "name profilePhoto year role department")
+    .populate("groupMembers", "name profilePhoto role")
+    .populate("project", "title status description technologies")
     .sort("-createdAt");
 
   // Verify expiration
@@ -278,9 +338,10 @@ export const getActiveMentorships = asyncHandler(async (req, res) => {
 // @access  Private
 export const getMentorshipDetails = asyncHandler(async (req, res) => {
   let mentorship = await Mentorship.findById(req.params.id)
-    .populate("mentor", "name profilePhoto role designation currentRole")
-    .populate("mentee", "name profilePhoto role")
+    .populate("mentor", "name profilePhoto role designation currentRole department")
+    .populate("mentee", "name profilePhoto role department year")
     .populate("groupMembers", "name profilePhoto role")
+    .populate("project", "title description githubLink projectLink status technologies")
     .populate("request", "requester");
 
   if (!mentorship) {
@@ -402,4 +463,26 @@ export const closeMentorship = asyncHandler(async (req, res) => {
   await mentorship.save();
 
   res.json(mentorship);
+});
+
+// @desc    Get all classes for current user
+// @route   GET /api/mentorship/user/classes
+// @access  Private
+export const getMyClasses = asyncHandler(async (req, res) => {
+  const query = {
+    $or: [
+      { mentor: req.user._id },
+      { mentee: req.user._id },
+      { groupMembers: req.user._id }
+    ]
+  };
+  const mentorships = await Mentorship.find(query).select('_id');
+  const mentorshipIds = mentorships.map(m => m._id);
+
+  const classes = await MentorshipClass.find({ mentorship: { $in: mentorshipIds } })
+    .populate("mentor", "name profilePhoto")
+    .populate("mentorship", "title")
+    .sort("scheduledAt");
+
+  res.json(classes);
 });

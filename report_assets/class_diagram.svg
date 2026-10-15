@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 850" width="100%" height="100%" style="background:#ffffff; font-family: 'Segoe UI', Arial, sans-serif;">
+  <defs>
+    <style>
+      .box { fill: #f8fafc; stroke: #334155; stroke-width: 1.5; rx: 4; }
+      .header-box { fill: #e2e8f0; stroke: #334155; stroke-width: 1.5; }
+      .title { font-weight: bold; font-size: 13px; fill: #0f172a; text-anchor: middle; }
+      .subtitle { font-style: italic; font-size: 10px; fill: #475569; text-anchor: middle; }
+      .text { font-size: 10px; fill: #1e293b; font-family: 'Courier New', monospace; }
+      .line { stroke: #475569; stroke-width: 1.2; fill: none; }
+      .arrow { fill: #475569; }
+      .label { font-size: 9px; fill: #64748b; font-weight: 600; }
+    </style>
+  </defs>
+
+  <!-- USER (Base) -->
+  <g transform="translate(430, 20)">
+    <rect width="240" height="200" class="box" />
+    <path d="M 0 0 L 240 0 L 240 32 L 0 32 Z" class="header-box" />
+    <text x="120" y="18" class="title">&lt;&lt;Model&gt;&gt; User</text>
+    <text x="120" y="28" class="subtitle">+id: ObjectId [PK]</text>
+    <line x1="0" y1="32" x2="240" y2="32" class="line" />
+    <text x="10" y="48" class="text">+name: String</text>
+    <text x="10" y="62" class="text">+email: String [Unique]</text>
+    <text x="10" y="76" class="text">+password: String [Hashed]</text>
+    <text x="10" y="90" class="text">+role: Enum(student,teacher,alumni,admin)</text>
+    <text x="10" y="104" class="text">+collegeId / facultyId: String</text>
+    <text x="10" y="118" class="text">+department: ObjectId [FK]</text>
+    <text x="10" y="132" class="text">+status: Enum(active,pending,rejected)</text>
+    <text x="10" y="146" class="text">+skills: Array&lt;String&gt;</text>
+    <line x1="0" y1="152" x2="240" y2="152" class="line" />
+    <text x="10" y="168" class="text">+comparePassword(pwd): Boolean</text>
+    <text x="10" y="182" class="text">+generateToken(): String</text>
+  </g>
+
+  <!-- POST -->
+  <g transform="translate(60, 280)">
+    <rect width="210" height="150" class="box" />
+    <path d="M 0 0 L 210 0 L 210 32 L 0 32 Z" class="header-box" />
+    <text x="105" y="18" class="title">&lt;&lt;Model&gt;&gt; Post</text>
+    <text x="105" y="28" class="subtitle">+id: ObjectId [PK]</text>
+    <line x1="0" y1="32" x2="210" y2="32" class="line" />
+    <text x="10" y="48" class="text">+author: ObjectId [FK->User]</text>
+    <text x="10" y="62" class="text">+content: String</text>
+    <text x="10" y="76" class="text">+mediaUrl: String</text>
+    <text x="10" y="90" class="text">+mediaType: Enum(image,video)</text>
+    <text x="10" y="104" class="text">+likes: Array&lt;ObjectId&gt;</text>
+    <line x1="0" y1="112" x2="210" y2="112" class="line" />
+    <text x="10" y="128" class="text">+createPost(): Post</text>
+    <text x="10" y="142" class="text">+toggleLike(userId): Void</text>
+  </g>
+
+  <!-- COMMENT -->
+  <g transform="translate(60, 480)">
+    <rect width="210" height="120" class="box" />
+    <path d="M 0 0 L 210 0 L 210 32 L 0 32 Z" class="header-box" />
+    <text x="105" y="18" class="title">&lt;&lt;Model&gt;&gt; Comment</text>
+    <text x="105" y="28" class="subtitle">+id: ObjectId [PK]</text>
+    <line x1="0" y1="32" x2="210" y2="32" class="line" />
+    <text x="10" y="48" class="text">+post: ObjectId [FK->Post]</text>
+    <text x="10" y="62" class="text">+author: ObjectId [FK->User]</text>
+    <text x="10" y="76" class="text">+content: String</text>
+    <line x1="0" y1="84" x2="210" y2="84" class="line" />
+    <text x="10" y="100" class="text">+addComment(): Comment</text>
+    <text x="10" y="114" class="text">+deleteComment(): Void</text>
+  </g>
+
+  <!-- PROJECT -->
+  <g transform="translate(320, 280)">
+    <rect width="230" height="180" class="box" />
+    <path d="M 0 0 L 230 0 L 230 32 L 0 32 Z" class="header-box" />
+    <text x="115" y="18" class="title">&lt;&lt;Model&gt;&gt; Project</text>
+    <text x="115" y="28" class="subtitle">+id: ObjectId [PK]</text>
+    <line x1="0" y1="32" x2="230" y2="32" class="line" />
+    <text x="10" y="48" class="text">+title: String</text>
+    <text x="10" y="62" class="text">+description: String</text>
+    <text x="10" y="76" class="text">+leader: ObjectId [FK->User]</text>
+    <text x="10" y="90" class="text">+mentor: ObjectId [FK->User]</text>
+    <text x="10" y="104" class="text">+status: Enum(pending,active,done)</text>
+    <text x="10" y="118" class="text">+progress: Number (0..100)</text>
+    <text x="10" y="132" class="text">+technologies: Array&lt;String&gt;</text>
+    <line x1="0" y1="140" x2="230" y2="140" class="line" />
+    <text x="10" y="156" class="text">+assignMentor(mentorId): Void</text>
+    <text x="10" y="170" class="text">+updateProgress(pct): Void</text>
+  </g>
+
+  <!-- PROJECT MEMBER -->
+  <g transform="translate(320, 500)">
+    <rect width="230" height="100" class="box" />
+    <path d="M 0 0 L 230 0 L 230 30 L 0 30 Z" class="header-box" />
+    <text x="115" y="17" class="title">&lt;&lt;Model&gt;&gt; ProjectMember</text>
+    <line x1="0" y1="30" x2="230" y2="30" class="line" />
+    <text x="10" y="45" class="text">+project: ObjectId [FK->Project]</text>
+    <text x="10" y="59" class="text">+user: ObjectId [FK->User]</text>
+    <text x="10" y="73" class="text">+roleInProject: String</text>
+    <line x1="0" y1="78" x2="230" y2="78" class="line" />
+    <text x="10" y="92" class="text">+addMember(): ProjectMember</text>
+  </g>
+
+  <!-- MENTOR REQUEST & MENTORSHIP -->
+  <g transform="translate(590, 280)">
+    <rect width="230" height="180" class="box" />
+    <path d="M 0 0 L 230 0 L 230 32 L 0 32 Z" class="header-box" />
+    <text x="115" y="18" class="title">&lt;&lt;Model&gt;&gt; MentorRequest</text>
+    <text x="115" y="28" class="subtitle">+id: ObjectId [PK]</text>
+    <line x1="0" y1="32" x2="230" y2="32" class="line" />
+    <text x="10" y="48" class="text">+requester: ObjectId [FK->User]</text>
+    <text x="10" y="62" class="text">+mentor: ObjectId [FK->User]</text>
+    <text x="10" y="76" class="text">+project: ObjectId [FK->Project]</text>
+    <text x="10" y="90" class="text">+goals: String</text>
+    <text x="10" y="104" class="text">+requestedDuration: Number</text>
+    <text x="10" y="118" class="text">+status: Enum(pending,accepted,rejected)</text>
+    <line x1="0" y1="128" x2="230" y2="128" class="line" />
+    <text x="10" y="145" class="text">+acceptRequest(duration): Mentorship</text>
+    <text x="10" y="160" class="text">+rejectRequest(): Void</text>
+  </g>
+
+  <!-- ACADEMIC CLASS -->
+  <g transform="translate(850, 280)">
+    <rect width="210" height="160" class="box" />
+    <path d="M 0 0 L 210 0 L 210 32 L 0 32 Z" class="header-box" />
+    <text x="105" y="18" class="title">&lt;&lt;Model&gt;&gt; AcademicClass</text>
+    <text x="105" y="28" class="subtitle">+id: ObjectId [PK]</text>
+    <line x1="0" y1="32" x2="210" y2="32" class="line" />
+    <text x="10" y="48" class="text">+name: String</text>
+    <text x="10" y="62" class="text">+subject: String</text>
+    <text x="10" y="76" class="text">+teacher: ObjectId [FK->User]</text>
+    <text x="10" y="90" class="text">+department: ObjectId [FK->Dept]</text>
+    <text x="10" y="104" class="text">+inviteCode: String [Unique]</text>
+    <line x1="0" y1="112" x2="210" y2="112" class="line" />
+    <text x="10" y="128" class="text">+createClass(): AcademicClass</text>
+    <text x="10" y="142" class="text">+enrollStudent(user): Void</text>
+  </g>
+
+  <!-- ACADEMIC RECORD -->
+  <g transform="translate(850, 480)">
+    <rect width="210" height="130" class="box" />
+    <path d="M 0 0 L 210 0 L 210 30 L 0 30 Z" class="header-box" />
+    <text x="105" y="17" class="title">&lt;&lt;Model&gt;&gt; AcademicRecord</text>
+    <line x1="0" y1="30" x2="210" y2="30" class="line" />
+    <text x="10" y="45" class="text">+academicClass: ObjectId [FK]</text>
+    <text x="10" y="59" class="text">+date: String (YYYY-MM-DD)</text>
+    <text x="10" y="73" class="text">+topic: String</text>
+    <text x="10" y="87" class="text">+notes: String</text>
+    <text x="10" y="101" class="text">+assignment: Object</text>
+    <line x1="0" y1="106" x2="210" y2="106" class="line" />
+    <text x="10" y="120" class="text">+addRecord(): AcademicRecord</text>
+  </g>
+
+  <!-- MESSAGE & NOTIFICATION -->
+  <g transform="translate(590, 500)">
+    <rect width="230" height="130" class="box" />
+    <path d="M 0 0 L 230 0 L 230 30 L 0 30 Z" class="header-box" />
+    <text x="115" y="17" class="title">&lt;&lt;Model&gt;&gt; Message</text>
+    <line x1="0" y1="30" x2="230" y2="30" class="line" />
+    <text x="10" y="45" class="text">+sender: ObjectId [FK->User]</text>
+    <text x="10" y="59" class="text">+recipient: ObjectId [FK->User]</text>
+    <text x="10" y="73" class="text">+text: String</text>
+    <text x="10" y="87" class="text">+isRead: Boolean</text>
+    <line x1="0" y1="94" x2="230" y2="94" class="line" />
+    <text x="10" y="108" class="text">+sendMessage(): Message</text>
+    <text x="10" y="122" class="text">+markAsRead(): Void</text>
+  </g>
+
+  <!-- RELATION LINES -->
+  <!-- User to Post -->
+  <path d="M 430 120 L 165 120 L 165 280" class="line" />
+  <text x="175" y="260" class="label">1..* creates</text>
+
+  <!-- Post to Comment -->
+  <path d="M 165 430 L 165 480" class="line" />
+  <text x="175" y="460" class="label">1..* has</text>
+
+  <!-- User to Project -->
+  <path d="M 480 220 L 480 280" class="line" />
+  <text x="490" y="260" class="label">1..* leads</text>
+
+  <!-- Project to ProjectMember -->
+  <path d="M 435 460 L 435 500" class="line" />
+  <text x="445" y="485" class="label">1..* has</text>
+
+  <!-- User to MentorRequest -->
+  <path d="M 600 220 L 650 280" class="line" />
+  <text x="635" y="255" class="label">1..* requests</text>
+
+  <!-- User to AcademicClass -->
+  <path d="M 670 120 L 950 120 L 950 280" class="line" />
+  <text x="870" y="140" class="label">1..* teaches / enrolls</text>
+
+  <!-- AcademicClass to AcademicRecord -->
+  <path d="M 950 440 L 950 480" class="line" />
+  <text x="960" y="465" class="label">1..* records</text>
+
+  <!-- User to Message -->
+  <path d="M 550 220 L 550 560 L 590 560" class="line" />
+  <text x="505" y="540" class="label">1..* sends</text>
+
+</svg>

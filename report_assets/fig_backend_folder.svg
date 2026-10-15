@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 620" width="100%" height="100%" style="background:#1e1e1e; font-family: 'Consolas', 'Courier New', monospace;">
+  <rect width="450" height="620" fill="#1e1e1e" rx="6" />
+  <g transform="translate(20, 25)">
+    <text x="0" y="0" fill="#e2e8f0" font-size="13" font-weight="bold">v server</text>
+    <text x="20" y="25" fill="#94a3b8" font-size="12">v config/</text>
+    <text x="40" y="45" fill="#38bdf8" font-size="12">JS db.js</text>
+    <text x="20" y="70" fill="#94a3b8" font-size="12">v controllers/</text>
+    <text x="40" y="90" fill="#38bdf8" font-size="12">JS authController.js</text>
+    <text x="40" y="110" fill="#38bdf8" font-size="12">JS projectController.js</text>
+    <text x="40" y="130" fill="#38bdf8" font-size="12">JS classroomController.js</text>
+    <text x="40" y="150" fill="#38bdf8" font-size="12">JS mentorshipController.js</text>
+    <text x="40" y="170" fill="#38bdf8" font-size="12">JS adminController.js</text>
+    <text x="20" y="195" fill="#94a3b8" font-size="12">v middleware/</text>
+    <text x="40" y="215" fill="#38bdf8" font-size="12">JS auth.js</text>
+    <text x="40" y="235" fill="#38bdf8" font-size="12">JS roleCheck.js</text>
+    <text x="20" y="260" fill="#94a3b8" font-size="12">v models/</text>
+    <text x="40" y="280" fill="#38bdf8" font-size="12">JS User.js</text>
+    <text x="40" y="300" fill="#38bdf8" font-size="12">JS Project.js</text>
+    <text x="40" y="320" fill="#38bdf8" font-size="12">JS AcademicClass.js</text>
+    <text x="40" y="340" fill="#38bdf8" font-size="12">JS Mentorship.js</text>
+    <text x="40" y="360" fill="#38bdf8" font-size="12">JS Message.js</text>
+    <text x="40" y="380" fill="#38bdf8" font-size="12">JS Notification.js</text>
+    <text x="20" y="405" fill="#94a3b8" font-size="12">v routes/</text>
+    <text x="40" y="425" fill="#38bdf8" font-size="12">JS authRoutes.js</text>
+    <text x="40" y="445" fill="#38bdf8" font-size="12">JS projectRoutes.js</text>
+    <text x="40" y="465" fill="#38bdf8" font-size="12">JS academicRoutes.js</text>
+    <text x="40" y="485" fill="#38bdf8" font-size="12">JS mentorshipRoutes.js</text>
+    <text x="40" y="505" fill="#38bdf8" font-size="12">JS adminRoutes.js</text>
+    <text x="20" y="530" fill="#eab308" font-size="12">JS server.js</text>
+    <text x="20" y="550" fill="#a855f7" font-size="12">{} package.json</text>
+    <text x="20" y="570" fill="#64748b" font-size="12"># .env</text>
+  </g>
+</svg>

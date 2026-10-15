@@ -32,3 +32,14 @@ export const protect = asyncHandler(async (req, res, next) => {
     throw new Error("Not authorized — invalid or expired token");
   }
 });
+
+// Middleware to restrict access based on user role
+export const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      res.status(403);
+      throw new Error(`Role (${req.user.role}) is not allowed to access this resource`);
+    }
+    next();
+  };
+};

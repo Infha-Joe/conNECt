@@ -1,115 +1,136 @@
 import { useAuth } from "../context/AuthContext";
 import { Link, useLocation } from "react-router-dom";
-import { FiHome, FiUser, FiSearch, FiBell, FiBriefcase, FiShield } from "react-icons/fi";
+import { FiHome, FiUser, FiSearch, FiBell, FiMenu, FiX, FiSettings, FiCompass } from "react-icons/fi";
 import LeftSidebar from "../components/layout/LeftSidebar";
-import RightSidebar from "../components/layout/RightSidebar";
 import Avatar from "../components/ui/Avatar";
+import NotificationDropdown from "../components/layout/NotificationDropdown";
+import { useState, useEffect } from "react";
 
-const DashboardLayout = ({ children, hideRightSidebar = false }) => {
+const DashboardLayout = ({ children }) => {
   const { user } = useAuth();
   const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans flex flex-col relative">
-      {/* Top Navbar */}
-      <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white shadow-sm">
-        <div className="mx-auto flex h-14 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
-          
-          {/* Logo */}
-          <Link to="/dashboard" className="font-display text-xl sm:text-2xl font-bold tracking-tight text-ink transition hover:opacity-80 w-20 lg:w-64 shrink-0">
-            con<span className="text-brand">NEC</span>t
-          </Link>
-
-          {/* Desktop Search - Integrated seamlessly */}
-          <div className="hidden md:flex flex-1 max-w-md relative ml-4">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-            <input 
-              type="text" 
-              placeholder="Search for people, clubs, events..." 
-              className="w-full bg-slate-50 border-none rounded-md py-1.5 pl-9 pr-4 text-sm text-ink outline-none focus:bg-white focus:ring-1 focus:ring-brand transition-all"
-            />
+    <div className="grid h-screen w-full lg:grid-cols-[280px_minmax(0,1fr)] bg-background font-sans overflow-hidden text-ink">
+      
+      {/* 
+        ========================================================
+        APPLICATION SIDEBAR
+        Inspired by Goat Funded & modern platforms
+        Stable 280px width, integrated feel, deep background
+        ========================================================
+      */}
+      <aside className="hidden lg:flex flex-col h-full bg-surface border-r border-border z-20">
+        {/* LOGO AREA */}
+        <div className="px-8 pt-8 pb-6 flex items-center gap-3">
+          <div className="w-10 h-10 rounded bg-primary flex items-center justify-center text-white font-bold text-lg shadow-sm">
+            C
           </div>
+          <span className="font-display text-2xl font-bold tracking-tight text-ink">
+            con<span className="text-primary">NEC</span>t
+          </span>
+        </div>
+        
+        {/* NAVIGATION RAIL */}
+        <div className="flex-1 overflow-y-auto scrollbar-hide">
+          <LeftSidebar />
+        </div>
+      </aside>
+
+      {/* 
+        ========================================================
+        MAIN APPLICATION SHELL
+        Uses 1fr properly to fill the remaining screen space
+        ========================================================
+      */}
+      <div className="flex flex-col h-full min-w-0 overflow-y-auto relative bg-background" id="main-scroll">
+        
+        {/* TOP BAR */}
+        <header className="sticky top-0 z-30 flex items-center justify-between px-6 lg:px-10 py-4 bg-background/95 backdrop-blur-md border-b border-border">
           
-          {/* Desktop Right Actions */}
-          <div className="hidden md:flex ml-auto items-center gap-5">
-            <button className="text-slate-500 hover:text-ink transition-colors relative">
-              <FiBell size={20} />
-              <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500 border border-white"></span>
+          {/* Mobile Toggle & Logo */}
+          <div className="flex items-center gap-4 lg:hidden">
+            <button onClick={() => setMobileMenuOpen(true)} className="text-ink hover:text-primary transition-colors">
+              <FiMenu size={24} />
             </button>
-            <Link to="/profile">
-              <Avatar name={user?.name} size="sm" className="hover:ring-2 hover:ring-brand/20 transition-all cursor-pointer" />
+            <span className="font-display text-xl font-bold text-ink">con<span className="text-primary">NEC</span>t</span>
+          </div>
+
+          
+
+          {/* Right Controls */}
+          <div className="flex items-center gap-5 ml-auto">
+            <NotificationDropdown />
+            
+            <Link to="/profile" className="hidden lg:flex items-center gap-3 hover:opacity-80 transition-opacity pl-4 border-l border-border">
+              <Avatar src={user?.profilePhoto} name={user?.name} className="w-10 h-10 border border-border shadow-sm" />
+              <div className="hidden xl:block text-left">
+                <p className="text-sm font-bold text-ink leading-tight">{user?.name}</p>
+                <p className="text-xs text-ink-light font-medium capitalize">{user?.role}</p>
+              </div>
             </Link>
           </div>
+        </header>
 
-          {/* Mobile Right Actions */}
-          <div className="flex md:hidden ml-auto items-center gap-4 text-ink">
-            <FiSearch size={20} />
-            <FiBell size={20} />
-          </div>
-        </div>
-      </header>
-
-      {/* Main Grid Layout */}
-      <div className="mx-auto flex w-full max-w-7xl flex-1 px-4 sm:px-6 lg:px-8 pb-20 md:pb-0">
-        
-        {/* Left Sidebar (Desktop & Tablet) */}
-        <aside className="hidden md:block w-20 lg:w-64 shrink-0 pt-6 pr-6 lg:pr-8">
-          <div className="sticky top-20">
-            <LeftSidebar />
-          </div>
-        </aside>
-
-        {/* Center Primary Content */}
-        <main className={`flex-1 pt-6 ${(hideRightSidebar || user?.role === "alumni" || user?.role === "admin") ? 'max-w-4xl mx-auto w-full' : 'max-w-[600px] mx-auto lg:max-w-[680px]'}`}>
+        {/* 
+          ========================================================
+          PAGE CONTENT CONTAINER
+          Intelligently uses viewport width (max-w-7xl = 1280px)
+          Eliminates the "huge empty right side"
+          ========================================================
+        */}
+        <main className="flex-1 w-full max-w-[1200px] px-6 lg:px-10 py-8">
           {children}
         </main>
-
-        {/* Right Sidebar (Desktop only) */}
-        {!(hideRightSidebar || user?.role === "alumni" || user?.role === "admin") && (
-          <aside className="hidden lg:block w-72 shrink-0 pt-6 pl-8 ml-8 border-l border-slate-200">
-            <div className="sticky top-20">
-              <RightSidebar />
-            </div>
-          </aside>
-        )}
       </div>
 
-      {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 z-40 flex w-full justify-around border-t border-slate-200 bg-white py-3 md:hidden">
-        {user?.role === "alumni" ? (
-          <Link 
-            to="/mentorship" 
-            className={`flex flex-col items-center gap-1 ${isActive('/mentorship') ? 'text-brand' : 'text-slate-500'}`}
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden bg-ink/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
+          <div 
+            className="absolute top-0 left-0 bottom-0 w-[300px] bg-surface shadow-2xl flex flex-col"
+            onClick={e => e.stopPropagation()}
           >
-            <FiBriefcase size={22} />
-            <span className="text-[10px] font-medium">Workspace</span>
-          </Link>
-        ) : user?.role === "admin" ? (
-          <Link 
-            to="/admin" 
-            className={`flex flex-col items-center gap-1 ${isActive('/admin') ? 'text-brand' : 'text-slate-500'}`}
-          >
-            <FiShield size={22} />
-            <span className="text-[10px] font-medium">Admin</span>
-          </Link>
-        ) : (
-          <Link 
-            to="/dashboard" 
-            className={`flex flex-col items-center gap-1 ${isActive('/dashboard') ? 'text-brand' : 'text-slate-500'}`}
-          >
+            <div className="flex items-center justify-between p-6 pb-2">
+              <span className="font-display text-2xl font-bold tracking-tight text-ink">
+                con<span className="text-primary">NEC</span>t
+              </span>
+              <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-ink hover:bg-background rounded-lg">
+                <FiX size={24} />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto scrollbar-hide pt-4">
+              <LeftSidebar />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Bottom Nav */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 flex w-full justify-around border-t border-border bg-surface py-3 lg:hidden pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+         <Link to="/dashboard" className={`flex flex-col items-center gap-1.5 transition-colors ${isActive('/dashboard') ? 'text-primary' : 'text-ink-light'}`}>
             <FiHome size={22} />
-            <span className="text-[10px] font-medium">Home</span>
-          </Link>
-        )}
-        <Link 
-          to="/profile" 
-          className={`flex flex-col items-center gap-1 ${isActive('/profile') ? 'text-brand' : 'text-slate-500'}`}
-        >
-          <FiUser size={22} />
-          <span className="text-[10px] font-medium">Profile</span>
-        </Link>
+            <span className="text-[10px] font-semibold">Home</span>
+         </Link>
+         {user?.role !== 'admin' && (
+           <>
+             <Link to="/network-feed" className={`flex flex-col items-center gap-1.5 transition-colors ${isActive('/network-feed') ? 'text-primary' : 'text-ink-light'}`}>
+               <FiCompass size={22} />
+               <span className="text-[10px] font-semibold">Feed</span>
+             </Link>
+             <Link to="/network" className={`flex flex-col items-center gap-1.5 transition-colors ${isActive('/network') ? 'text-primary' : 'text-ink-light'}`}>
+               <FiSearch size={22} />
+               <span className="text-[10px] font-semibold">Network</span>
+             </Link>
+           </>
+         )}
+         <Link to="/profile" className={`flex flex-col items-center gap-1.5 transition-colors ${isActive('/profile') ? 'text-primary' : 'text-ink-light'}`}>
+            <FiUser size={22} />
+            <span className="text-[10px] font-semibold">Profile</span>
+         </Link>
       </nav>
     </div>
   );

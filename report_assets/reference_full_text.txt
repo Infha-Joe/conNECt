@@ -1,0 +1,1097 @@
+=== PAGE 1 ===
+SMART-RENT RENTAL MANAGEMENT PORTAL
+23IT53C – MODERN WEB TECHNOLOGIES
+PROJECT REPORT
+Submitted by
+MOHAMED NAFEES R
+2403957620521024
+In partial fulfillment for the award of the degree
+of
+BACHELOR OF TECHNOLOGY
+in
+INFORMATION TECHNOLOGY
+NATIONAL ENGINEERING COLLEGE
+(An Autonomous Institution affiliated to Anna University, Chennai)
+K.R.NAGAR, KOVILPATTI - 628503
+OCTOBER - 2025
+
+
+=== PAGE 2 ===
+1
+NATIONAL ENGINEERING COLLEGE
+(An Autonomous Institution affiliated to Anna University, Chennai)
+K.R.NAGAR, KOVILPATTI - 628503
+BONAFIDE CERTIFICATE
+This is to certify that this project report, “Smart-Rent Rental Management Portal”, is
+the bonafide work of MOHAMED NAFEES R (24205024) who carried out the project work
+under my supervision.
+Course Instructor/Guide
+Submitted to the 23IT53C – MODERN WEB TECHNOLOGIES Viva-Voce examination
+held at National Engineering College, K.R.Nagar, Kovilpatti on
+Internal Examiner
+Co Examiner
+
+
+=== PAGE 3 ===
+2
+TABLE OF CONTENTS
+CH NO
+TITLE
+PAGE NO
+1
+INTRODUCTION
+3
+2
+OBJECTIVES
+4
+3
+DESCRIPTION
+5
+4
+CLASS DIAGRAM
+6
+5
+TABLE STRUCTURES
+7
+6
+ER DIAGRAM
+11
+7
+TECH STACK
+12
+8
+MODULES
+13
+9
+CONCLUSION
+41
+
+
+=== PAGE 4 ===
+3
+CHAPTER 1
+INTRODUCTION
+The SmartRent Rental Management Portal is a web-based application developed to
+manage and organize rental products digitally. It is designed to replace traditional manual
+methods of managing product rentals, booking requests, rental periods, payments, and
+product returns. The system provides a convenient platform for users to rent products such as
+books, cameras, and laptops for a specified period. It uses the MERN stack, which includes
+MongoDB, Express.js, React.js, and Node.js, to provide an efficient and user-friendly rental
+management solution.
+The system provides two types of users: User and Admin, each having specific roles
+and access privileges. Users can register, log in, browse available products, search by
+category, select rental durations from one to seven days, submit rental requests, and view
+their rental history. The system calculates the total rental amount based on the selected
+product and rental duration. It also provides a demo payment facility and allows users to track
+the status of their rental requests.
+The Admin can add, update, and delete products, manage product availability, review
+rental requests, approve or reject bookings, monitor rental periods, and manage product
+returns and damage reports. The system also supports email notifications to inform users
+about important rental activities, including booking confirmations, approval or rejection of
+requests, and return updates.
+The SmartRent Rental Management Portal helps maintain accurate rental records,
+reduces manual errors, saves time, and improves the overall efficiency of rental operations. It
+enhances transparency by providing clear rental information and controlling access to
+administrative functions. The responsive and user-friendly interface enables users and
+administrators to manage rental activities efficiently. This system is useful for rental
+businesses and individuals who want to manage products and rental services in a more
+organized, convenient, and reliable manner.
+
+
+=== PAGE 5 ===
+4
+CHAPTER 2
+OBJECTIVES
+•
+To provide role-based authentication and authorization ensuring secure access for Users and
+Admins.
+•
+To maintain a centralized MongoDB database for storing user details, product information,
+rental requests, and transaction records.
+•
+To enable automatic updates of product availability and rental status when booking requests
+are approved, rejected, or completed.
+•
+To allow Admins to add, update, delete, and manage rental products such as books, cameras,
+and laptops.
+•
+To implement a rental booking system that allows users to select products, choose rental
+durations from one to seven days, and calculate the total rental cost automatically.
+•
+To provide a demo payment facility for submitting rental requests and recording payment-
+related details.
+•
+To implement search and filter features for quickly locating products based on their names
+and categories.
+•
+To provide email notifications to users regarding booking requests, approval or rejection, and
+rental return updates.
+•
+To maintain rental history and allow users to track booking status, rental periods, and
+expected return dates.
+•
+To provide a user-friendly and responsive interface for smooth navigation across product
+listings, user dashboards, and admin modules.
+•
+To implement secure password management, JWT-based authentication, and protected routes
+to prevent unauthorized access.
+•
+To improve the efficiency, transparency, and reliability of rental operations by reducing
+manual work and maintaining organized digital records.
+
+
+=== PAGE 6 ===
+5
+CHAPTER 3
+DESCRIPTION
+The SmartRent Rental Management Portal is a web-based application designed to manage
+rental products, booking requests, and product availability efficiently. The system includes
+two types of users: User and Admin. The Admin has the ability to add, update, and delete
+rental products such as books, cameras, and laptops, manage product availability, and
+monitor rental requests. All information is stored in a MongoDB database for easy access and
+management.
+Users can register and log in to browse available products, search by category, select rental
+durations from one to seven days, and submit rental requests. The system automatically
+calculates the total rental amount based on the selected product and rental period. Users can
+also access the demo payment facility, view their rental history, and track the status of their
+bookings. The Admin can approve or reject rental requests, manage product returns, and
+record damage reports.
+The system ensures secure access through JWT-based authentication and role-based
+authorization, providing a user-friendly and responsive interface for all users. It also supports
+email notifications to inform users about booking updates and rental activities. This project
+helps reduce manual work, minimize errors, improve rental management efficiency, and
+maintain organized digital records of products, users, and rental transactions. It provides a
+convenient and reliable solution for managing rental services through a centralized web
+application.
+
+
+=== PAGE 7 ===
+6
+CHAPTER 4
+CLASS DIAGRAM
+
+
+=== PAGE 8 ===
+7
+CHAPTER 5
+TABLE STRUCTURES
+1. users Table
+Stores authentication and profile information for both regular users and administrators.
+Field
+Type
+Null
+Key
+Default
+Extra
+id
+int
+NO
+PRI
+NULL
+auto_increment
+name
+varchar(150)
+NO
+NULL
+email
+varchar(255)
+NO
+UNI
+NULL
+password
+varchar(255)
+NO
+NULL
+role
+enum('User','Admin')
+NO
+'User'
+mobile_number
+varchar(20)
+YES
+NULL
+is_active
+enum('YES','NO')
+YES
+'YES'
+created_by
+int
+YES
+MUL
+NULL
+updated_by
+int
+YES
+MUL
+NULL
+created_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+updated_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+CURRENT_TIMESTAMP
+2. categories Table
+Manages product categories such as Books, Cameras, and Laptops.
+Field
+Type
+Null
+Key
+Default
+Extra
+category_id
+int
+NO
+PRI
+NULL
+auto_increment
+category_name
+varchar(100)
+NO
+UNI
+NULL
+description
+text
+YES
+NULL
+created_by
+int
+YES
+MUL
+NULL
+created_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+updated_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+CURRENT_TIMESTAMP
+
+
+=== PAGE 9 ===
+8
+3. products Table
+Stores inventory items available for rent across categories.
+Field
+Type
+Null
+Key
+Default
+Extra
+product_id
+int
+NO
+PRI
+NULL
+auto_increment
+category_id
+int
+NO
+MUL
+NULL
+product_name
+varchar(255)
+NO
+NULL
+description
+text
+YES
+NULL
+image_url
+varchar(500)
+YES
+NULL
+daily_price
+decimal(10,2)
+NO
+NULL
+availability_stat
+us
+enum('Available','Rented'
+,'Maintenance')
+NO
+'Available'
+created_by
+int
+YES
+MUL
+NULL
+updated_by
+int
+YES
+MUL
+NULL
+created_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+updated_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+CURRENT_TIMESTAMP
+4. product_availability Table
+Manages specific calendar availability windows and date blocking for products.
+Field
+Type
+Null
+Key
+Default
+Extra
+availability_id
+int
+NO
+PRI
+NULL
+auto_increment
+product_id
+int
+NO
+MUL
+NULL
+start_date
+date
+NO
+NULL
+end_date
+date
+NO
+NULL
+is_booked
+enum('YES','NO')
+YES
+'NO'
+created_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+updated_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+on update
+CURRENT_TIMESTAMP
+
+
+=== PAGE 10 ===
+9
+5. rentals Table
+Stores core rental booking requests submitted by users.
+Field
+Type
+Null
+Key
+Default
+Extra
+rental_id
+int
+NO
+PRI
+NULL
+auto_increment
+user_id
+int
+NO
+MU
+L
+NULL
+product_id
+int
+NO
+MU
+L
+NULL
+start_date
+date
+NO
+NULL
+end_date
+date
+NO
+NULL
+duration_da
+ys
+int
+NO
+NULL
+daily_price
+decimal(10,2)
+NO
+NULL
+total_amoun
+t
+decimal(10,2)
+NO
+NULL
+rental_statu
+s
+enum('Pending','Approved','Rejected',
+'Returned')
+NO
+'Pending'
+created_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATE
+updated_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATE
+CURRENT_TIMESTAMP
+6. payments Table
+Records demonstration payment transactions and UPI identifier details for bookings.
+Field
+Type
+Null
+Key
+Default
+Extra
+payment_id
+int
+NO
+PRI
+NULL
+auto_increment
+rental_id
+int
+NO
+MUL
+NULL
+user_id
+int
+NO
+MUL
+NULL
+mobile_number
+varchar(20)
+NO
+NULL
+upi_identifier
+varchar(255)
+NO
+NULL
+amount_paid
+decimal(10,2)
+NO
+NULL
+payment_status
+enum('Success','Failed','Pending'
+)
+NO
+'Success'
+transaction_dat
+e
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATE
+
+
+=== PAGE 11 ===
+10
+7. returns Table
+Tracks product return processing handled by administrators.
+Field
+Type
+Null
+Key
+Default
+Extra
+return_id
+int
+NO
+PRI
+NULL
+auto_increment
+rental_id
+int
+NO
+MUL
+NULL
+admin_id
+int
+NO
+MUL
+NULL
+return_date
+date
+NO
+NULL
+inspection_statu
+s
+enum('Passed','Damaged',
+'Missing Parts')
+NO
+'Passed'
+remarks
+text
+YES
+NULL
+created_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+8. damage_reports Table
+Logs damage details and associated penalty costs if a rented product returns harmed.
+Field
+Type
+Null
+Key
+Default
+Extra
+damage_id
+int
+NO
+PRI
+NULL
+auto_increment
+rental_id
+int
+NO
+MUL
+NULL
+reported_by
+int
+NO
+MUL
+NULL
+damage_description
+text
+NO
+NULL
+penalty_amount
+decimal(10,2)
+YES
+0.00
+repair_status
+enum('Pending','In
+Repair','Resolved')
+NO
+'Pending'
+created_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+updated_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+CURRENT_TIMESTAMP
+9. notifications Table
+Stores audit logs and event triggers for user and administrator email notifications.
+Field
+Type
+Null
+Key
+Default
+Extra
+notification_id
+int
+NO
+PRI
+NULL
+auto_increment
+user_id
+int
+NO
+MUL
+NULL
+rental_id
+int
+YES
+MUL
+NULL
+event_type
+varchar(100)
+NO
+NULL
+message
+text
+NO
+NULL
+is_sent
+enum('YES','NO')
+YES
+'YES'
+created_at
+datetime
+YES
+CURRENT_TIMESTAMP
+DEFAULT_GENERATED
+
+
+=== PAGE 12 ===
+11
+CHAPTER 6
+ER DIAGRAM
+
+
+=== PAGE 13 ===
+12
+CHAPTER 7
+TECH STACK
+Frontend Technologies: React.js, Vite, HTML5, CSS3, JavaScript
+Backend Technologies: Node.js, Express.js
+Middleware: JWT Authentication Middleware, Authorization Middleware, CORS
+Middleware, Express JSON Middleware
+Database: MongoDB, Mongoose ODM
+Additional Technologies: Axios for API communication, bcryptjs for password hashing,
+Nodemailer for email notifications, JSON Web Token (JWT) for authentication
+Approach: RESTful API Design, Asynchronous Programming using Async/Await, Modular
+Architecture, Role-Based Access Control, Client–Server Architecture
+Architecture: MVC (Model-View-Controller)
+•
+Models: Mongoose models representing database entities such as User, Product, Rental, and
+Notification.
+•
+Views: React components responsible for user interface rendering, product browsing, rental
+booking, payment demonstration, and admin dashboard interactions.
+•
+Controllers: Express.js route handlers responsible for business logic, authentication, product
+management, rental requests, booking approvals, and API responses.
+•
+Routes: Express.js routes that connect frontend requests to the appropriate controllers and
+backend services.
+•
+Database: MongoDB stores user accounts, product details, rental records, booking statuses,
+and notification information.
+•
+Services: Backend services handle email notifications and other reusable business operations.
+
+
+=== PAGE 14 ===
+13
+CHAPTER 8
+MODULES
+8.1 FOLDER STRUCTURE
+BACKEND FOLDER STRUCTURE
+Fig 8.1 – Backend Folder Structure
+The SmartRent backend folder structure organizes the application into routes, controllers,
+models, services, and middleware. Routes handle API requests, controllers process
+application logic, and models manage MongoDB data using Mongoose. Services handle
+reusable operations, while middleware manages authentication and authorization. This
+modular structure improves code readability, maintainability, debugging, and backend
+functionality.
+
+
+=== PAGE 15 ===
+14
+Fig 8.2 Backend Routes
+In the SmartRent Rental Management Portal, the routes and services form the core of the
+backend architecture, ensuring modularity, readability, and maintainability. The backend is developed
+using Node.js and Express.js, while MongoDB is used to store user details, product information,
+rental requests, and notification records. Routes define the endpoints through which the React
+frontend communicates with the backend. Each route handles a specific operation, such as user
+authentication, product management, rental booking, booking approval, payment demonstration, and
+notification management. HTTP methods such as GET, POST, PUT, and DELETE are used to
+retrieve, create, update, and delete records.
+Services handle reusable business operations and database interactions using Mongoose. They
+manage operations such as calculating rental amounts, checking product availability, preventing
+conflicting bookings, updating rental statuses, and sending email notifications. Authentication and
+authorization middleware protect restricted endpoints and ensure that only authorized users can
+perform administrative operations. Together, routes, controllers, and services create a structured and
+scalable backend architecture that improves code reusability, simplifies debugging, and supports the
+efficient operation of the SmartRent Rental Management Portal.
+
+
+=== PAGE 16 ===
+15
+FRONTEND FOLDER STRUCTURE:
+Fig 8.3 – Frontend Folder Structure
+The SmartRent frontend folder organizes React components, pages, assets, services, and
+routing files. It manages user interfaces, API communication, product browsing, rental
+requests, payments, and admin dashboards, ensuring a responsive and user-friendly
+experience.
+
+
+=== PAGE 17 ===
+16
+Fig 8.4 – Admin Pages
+Admin pages for managing products, rental requests, customer details, inventory, and rental
+reports. These pages help administrators monitor bookings, update product information, manage
+rental approvals, track returns, and maintain efficient operations within the SmartRent Rental
+Management Portal.
+Fig 8.5 – User Pages –administrators and users in the Smart-Rent Rental Management Portal.
+
+
+=== PAGE 18 ===
+17
+The SmartRent Rental Management Portal is developed with a clear separation of concerns,
+consisting of a Backend API Server and a Frontend User Interface. This architecture follows modern
+web application development practices and
+supports modularity, independent development,
+maintainability, and scalability. The application uses React.js and Vite for the frontend, Node.js and
+Express.js for the backend, and MongoDB for persistent data storage.Backend API Server Module.
+•
+API Routing (routes):
+o
+Purpose: Defines and manages REST API endpoints used by the frontend to
+communicate with the backend.
+o
+Key Feature: Routes are organized into modules such as authentication, products,
+rentals, admin, and notifications. They handle operations including user login,
+product listing, rental requests, booking approvals, and rental status updates.
+•
+Business Logic (controllers):
+o
+Purpose: Processes incoming API requests and manages the application's core
+operations.
+o
+Key Feature: Controllers handle input validation, user authentication, product
+management, rental calculations, booking approval or rejection, and return processing.
+They communicate with the database layer and return appropriate responses to the
+frontend.
+•
+Database Module (db.js, seedData.js):
+o
+Purpose: Manages database connections and stores application data.
+o
+Key Feature: Controllers handle input validation, user authentication, product
+management, rental calculations, booking approval or rejection, and return processing.
+They communicate with the database layer and return appropriate responses to the
+frontend.
+•
+Utilities (utils):
+o
+Purpose: Provides reusable helper functions and security mechanisms across the
+backend.
+o
+Key
+Feature:
+Includes
+JWT
+authentication,
+role-based
+authorization,
+request
+validation, error handling, CORS configuration, password hashing, and email
+notification utilities.
+•
+Server Core (server.js, app.js, config.env):
+o
+Purpose: Contains the main application entry point and configuration.
+
+
+=== PAGE 19 ===
+18
+o
+Key Feature: The server initializes the Express application, connects to MongoDB,
+loads environment variables, registers middleware and routes, and starts listening for
+client requests. Sensitive credentials and configuration values are stored in
+environment variables.
+2. Frontend User Interface Module
+The frontend is developed using React.js and Vite. It provides a responsive Single-Page Application
+(SPA) through which users and administrators interact with the rental management system.
+•
+Pages & Views (pages):
+o
+Purpose: Contains the major screens and views of the application.
+o
+Key Feature: Includes login and registration pages, product browsing pages, product
+details, rental booking pages, user rental history, and the admin dashboard. Users can
+browse products and track their rental requests, while administrators can manage
+inventory and booking activities.
+•
+UI Components (components):
+o
+Purpose: Contains reusable user interface elements used throughout the application.
+o
+Key Feature: Includes navigation bars, product cards, search fields, category filters,
+booking forms, status indicators, confirmation messages, and dashboard elements.
+These components maintain a consistent design and improve user experience.
+•
+Services (services):
+o
+Purpose: Centralizes communication between the frontend and backend API.
+o
+Key Feature: Uses Axios to send HTTP requests, manage API responses, and handle
+errors. Service functions support authentication, product retrieval, rental creation,
+booking status updates, and notification management.
+•
+Routing (routes.jsx):
+o
+Purpose: Manages client-side navigation and maps URLs to the appropriate page
+components.
+o
+Key
+Feature:
+Provides
+navigation
+between
+public
+pages,
+user
+pages,
+and
+administrator pages. Protected routes restrict access to authorized users based on their
+authentication status and role.
+Layouts(layout):
+o
+Purpose: Defines common structural elements shared across groups of pages.
+
+
+=== PAGE 20 ===
+19
+o
+Key Feature: Provides consistent headers, navigation menus, sidebars, and content
+areas for user and admin dashboards. Separate layouts help organize rental activities
+and administrative operations efficiently.
+ADMIN DASHBOARD
+Fig 8.6 – Admin Dashboard Displaying All Rental Management Details
+The Admin Dashboard of the SmartRent Rental Management Portal provides a centralized
+interface for managing rental operations efficiently. It includes a header, navigation sidebar, and
+summary cards displaying important information such as total products, registered users, pending
+requests, approved rentals, and returned products. The sidebar provides access to product management,
+user management, rental requests, returns, damage reports, and notifications.
+The management section allows administrators to add, update, and remove products, manage
+product availability, review rental requests, approve or reject bookings, and track product returns. The
+dashboard also provides quick actions for frequently used tasks and displays recent rental requests
+with customer details, product information, rental dates, total amounts, and request status. These
+features help administrators monitor activities and manage bookings effectively.
+Overall, the SmartRent Admin Dashboard simplifies the management of products, users, and
+rental transactions through an organized web-based interface. It helps administrators monitor rental
+activities, maintain accurate records, and respond to booking requests promptly. By bringing essential
+functions together in one place, the dashboard improves operational efficiency and supports effective
+rental management.
+
+
+=== PAGE 21 ===
+20
+Manage Products
+Fig 8.7 - Admin Manage Products Page
+The Admin Manage Products page is an important section of the SmartRent Rental
+Management Portal, designed to help administrators manage the products available for rent. Its main
+purpose is to add new products, view existing products, update product details, and remove
+unavailable or discontinued items. The page allows the administrator to manage product information
+such as product name, category, description, rental price, availability, and product image. Products
+can be organized into categories such as books, cameras, and laptops, making it easier for users to
+browse and select the items they need.
+The page typically displays all available products in a structured table or card layout, along
+with options to edit or delete each product. The administrator can update rental prices, modify product
+descriptions, change images, and maintain product availability based on inventory. An Add Product
+button allows new products to be included in the system, while the edit and delete options help
+maintain accurate product records. This page improves inventory management, keeps product
+information up to date, and ensures that users can view reliable details before submitting rental
+requests.
+
+
+=== PAGE 22 ===
+21
+Fig 8.8 – Admin Attendance Report Page – Page showing attendance reports and performance
+summaries.
+The Admin Rental Report page is an important section of the SmartRent Rental Management
+Portal, designed to provide a detailed overview of rental activities and booking records. It helps
+administrators monitor rental requests, approved bookings, rejected requests, completed rentals, and
+overdue items. The page allows the admin to filter rental records based on product category, rental
+status, and date range. The generated report provides essential information such as rental ID, customer
+name, product name, rental start date, return date, rental duration, total amount, and booking status.
+The rental report table presents the information in an organized format, helping administrators
+analyze product demand and monitor rental transactions efficiently. The report also supports
+inventory monitoring by showing which products are available, rented, or awaiting return. If
+implemented, download or print options can help administrators maintain records for future reference.
+Overall, the Admin Rental Report page improves rental tracking, supports better inventory
+management, and helps administrators make informed decisions about the operation of the SmartRent
+system.
+
+
+=== PAGE 23 ===
+22
+Fig 8.9 - Live Activity & Notifications Page - Page showing Live Activity & Notifications
+Performance Sessions.
+The Live Activity & Notifications page is an important section of the SmartRent Rental
+Management Portal, designed to display recent rental activities and provide updates to users and
+administrators. It helps users track important events, such as rental request submissions, booking
+approvals or rejections, rental status changes, and return reminders. The notification section provides
+relevant information about rental transactions, helping users stay informed about their booking
+progress. Administrators can also monitor recent activities and identify changes in rental requests and
+product availability.
+The page presents activity details and notifications in an organized format, making it easier to
+understand recent updates within the system. Notifications can include the rental request status,
+product details, payment information, and reminders about upcoming return dates, depending on the
+implemented features. This functionality improves communication between users and administrators,
+reduces the need for manual status checking, and provides timely updates about rental activities.
+Overall, the Live Activity & Notifications page enhances user convenience, improves rental tracking,
+and supports efficient management of the SmartRent system.
+
+
+=== PAGE 24 ===
+23
+Login Page
+Fig 8.10 - Admin & Users Login Page
+The User Login page allows registered customers to access the SmartRent Rental
+Management Portal securely. Users enter their email address and password to authenticate their
+accounts. After successful login, they can browse products, submit rental requests, view booking
+status, and manage their rental history. The login page provides a simple, user-friendly interface with
+input fields for credentials and a login button. It helps protect user accounts through authentication
+and provides access to personalized rental services based on their account details.
+The Admin Login page provides authorized administrators with secure access to the
+management features of the SmartRent Rental Management Portal. After successful authentication,
+they can manage products, review rental requests, monitor inventory, and maintain rental records.It
+helps restrict administrative functions to authorized users and supports secure system management.
+The admin dashboard provides access to product management, booking approvals, return tracking,
+and rental reports.
+
+
+=== PAGE 25 ===
+24
+User DashBoard
+Fig 8.14 – Browse Products & filtering Products Based on Categories
+The Browse Products page allows users to explore the products available for rent in the
+SmartRent Rental Management Portal. The page displays product details such as product name, image,
+category, rental price, and availability. Users can browse different products, including books, cameras,
+and laptops, and select suitable items based on their rental needs.
+The filtering feature helps users find products quickly by selecting specific categories. Users
+can also search for products using keywords, making product discovery easier and more efficient.
+Overall, this feature improves product accessibility and helps users identify suitable products before
+submitting rental requests.
+Fig 8.15 - Rental Request & approvals View User Pages
+The Rental Request page allows users to select products and submit rental requests through
+the SmartRent Rental Management Portal. Users can view product details, rental prices, availability,
+and rental duration before submitting a request. The Rental Approval Status page helps users track
+their requests by displaying booking details, rental dates, total cost, and status, such as Pending,
+Approved, or Rejected.
+The User Rental History page displays previous and current rental transactions in an
+organized format. Users can review rented products, booking dates, rental duration, payment amounts,
+
+
+=== PAGE 26 ===
+25
+and return status. These features simplify the rental process, improve transparency, and help users
+monitor their bookings and manage rental activities conveniently through a user-friendly interface.
+Fig 8.16 - Live Activity & Notifications User Pages
+The Live Activity page allows users to monitor their recent activities within the SmartRent
+Rental Management Portal. It displays updates related to rental requests, booking approvals, product
+selections, and rental status changes. Users can review their recent interactions and understand the
+progress of their rental transactions through an organized and user-friendly interface.
+The Notifications page provides important updates about rental activities to keep users
+informed. Notifications may include rental request approvals, rejected bookings, payment updates,
+and upcoming return reminders. These features reduce confusion, improve transparency, and help
+users manage their rental activities efficiently within the SmartRent Rental Management Portal.
+Fig 8.17 - Product Details and Request Rental with Payment
+The Product Details page displays complete information about the selected product in the
+SmartRent Rental Management Portal. Users can view the product name, image, category, description,
+
+
+=== PAGE 27 ===
+26
+rental price, and availability status. This information helps users understand the product's features and
+cost before making a rental decision. The page provides a clear interface for exploring available
+products.
+The Rental page allows users to select their preferred rental duration and submit a rental
+request. The system calculates the total rental cost based on the product's rental price and selected
+duration. Users can review their rental details before submitting the request. This feature simplifies
+the booking process and helps users manage their rental selections conveniently.
+Fig 8.18 - Real Time Razorpay Amount through access Rental
+The Razorpay Payment page allows users to pay the rental amount through the integrated
+payment gateway in the SmartRent Rental Management Portal. The system calculates the rental cost
+based on the selected product and rental duration. Before proceeding, users can review the total
+amount and initiate the payment process using the available payment options supported by Razorpay.
+After the payment process is completed, the system displays the payment status and updates
+the relevant rental transaction based on the payment response. This integration provides a convenient
+and secure payment experience while reducing manual payment handling. It also helps users track
+their rental payments and supports efficient management of rental transactions by the administrator.
+Real transactions depend on the configured Razorpay account and payment mode.
+Fig 8.19 Confirming Payment Page
+
+
+=== PAGE 28 ===
+27
+The Confirming Payment page is designed to verify the payment process after a user initiates
+a rental transaction through Razorpay in the SmartRent Rental Management Portal. It displays the
+payment processing status while the system receives the response from the payment gateway. The
+page helps users understand that their payment is being processed before the final transaction status is
+displayed.
+After receiving the payment response, the system displays the appropriate result, such as
+successful payment or payment failure. When payment is successful, the related rental transaction can
+be updated according to the system's configured workflow. If the payment fails, users may be allowed
+to try again. This page improves transparency, reduces confusion during transactions, and provides a
+smoother rental payment experience.
+Fig 8.20 Payment Succccessful Page
+The Payment Successful page confirms that the user's rental payment has been completed
+successfully through the Razorpay payment gateway in the SmartRent Rental Management Portal. It
+displays a confirmation message and relevant transaction details, such as the payment amount,
+transaction reference, and rental information, helping users verify their payment status.
+After successful payment verification, the system updates the corresponding payment status
+according to the configured workflow. Users can review their rental details and return to the
+dashboard to track their booking status. This page improves transaction transparency, provides clear
+payment confirmation, and offers users a convenient and reliable rental payment experience.
+
+
+=== PAGE 29 ===
+28
+Fig 8.21 Rental Submitted Page
+The Rental Submitted page confirms that the user's rental request has been successfully
+submitted through the SmartRent Rental Management Portal. It displays a confirmation message
+along with relevant rental details, such as the selected product, rental duration, rental dates, and total
+rental amount. This page helps users verify their submitted information and understand that their
+request has been recorded by the system.
+After submission, the rental request is stored in the system for further processing according to
+the configured workflow. Users can visit their rental history or dashboard to check the current status
+of the request, such as Pending or Approved. This page improves user confidence, provides clear
+feedback, and makes the rental booking process simple, organized, and convenient.
+Fig 8.22 User Email Approved Page
+The User Email Approved page displays an email notification sent to the user when the
+administrator approves a rental request in the SmartRent Rental Management Portal. The email
+provides important information about the approved rental, including the product name, rental duration,
+
+
+=== PAGE 30 ===
+29
+booking details, and rental dates, depending on the implemented features. This notification helps users
+stay informed about their rental request status.
+The email approval notification improves communication between the administrator and the
+user by delivering timely updates directly to the user's registered email address. Users can refer to the
+email to confirm their booking details and plan their rental accordingly. This feature reduces the need
+to check the application repeatedly, improves transparency, and provides a convenient and reliable
+rental management experience.
+Fig 8.23 Admin Email Request Page
+The Admin Email Request page displays email notifications sent to the administrator when
+users submit new rental requests through the SmartRent Rental Management Portal. The email
+contains relevant information, such as the user's details, requested product, rental duration, and
+booking information. This notification helps the administrator identify new requests and take the
+necessary action promptly.
+The email notification feature improves communication between users and administrators by
+providing timely updates about rental activities. After receiving a request notification, the
+administrator can access the portal to review the booking and approve or reject it based on product
+availability. This feature reduces manual monitoring, supports efficient rental request management,
+and helps ensure that booking requests are handled systematically.
+
+
+=== PAGE 31 ===
+30
+CHAPTER 9
+CONCLUSION
+In conclusion, the SmartRent Rental Management Portal provides a simple and
+effective solution for managing rental activities in a digital environment. It reduces
+manual record-keeping and simplifies product management, rental requests, payment
+processing, and return tracking. The system provides separate access for Admin and
+Users, ensuring appropriate role-based access and control.
+Administrators can manage products, monitor inventory, approve or reject rental
+requests, track returns, and view rental reports. Users can browse products, filter
+categories, submit rental requests, make payments through the integrated Razorpay
+gateway, and track booking status. Email notifications help users and administrators
+receive important updates about rental activities.
+Overall, the SmartRent Rental Management Portal improves efficiency, maintains
+organized rental records, and provides a convenient user experience. It reduces
+manual work, improves transparency, and supports effective communication between
+administrators and users. The system serves as a useful digital solution for managing
+rental products and transactions in an organized and professional manner.
+
+

@@ -1,24 +1,14 @@
-// Signature element: a constellation of connected nodes representing
-// students, teachers, alumni, clubs and projects — the "network" in conNECt.
-// Lines draw in on mount, nodes pulse gently to suggest an active, living network.
-
 const nodes = [
-  { id: "student", x: 60, y: 210, r: 7, label: "Student" },
-  { id: "mentor", x: 220, y: 70, r: 9, label: "Mentor" },
-  { id: "alumni", x: 340, y: 160, r: 7, label: "Alumni" },
-  { id: "club", x: 130, y: 320, r: 6, label: "Club" },
-  { id: "project", x: 300, y: 300, r: 6, label: "Project" },
-  { id: "event", x: 380, y: 40, r: 5, label: "Event" },
+  { id: "student", x: 60, y: 210, r: 7 },
+  { id: "mentor", x: 220, y: 70, r: 9 },
+  { id: "alumni", x: 340, y: 160, r: 7 },
+  { id: "academic", x: 130, y: 320, r: 6 },
+  { id: "project", x: 300, y: 300, r: 6 },
 ];
 
 const edges = [
-  ["student", "mentor"],
-  ["mentor", "alumni"],
-  ["student", "club"],
-  ["mentor", "project"],
-  ["club", "project"],
-  ["alumni", "event"],
-  ["mentor", "event"],
+  ["student", "mentor"], ["mentor", "alumni"], ["student", "academic"],
+  ["mentor", "project"], ["academic", "project"]
 ];
 
 const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
@@ -31,7 +21,6 @@ const NetworkConstellation = () => (
         <stop offset="100%" stopColor="#C9A24B" stopOpacity="0.1" />
       </linearGradient>
     </defs>
-
     {edges.map(([a, b], i) => {
       const from = byId[a];
       const to = byId[b];
@@ -39,58 +28,26 @@ const NetworkConstellation = () => (
       return (
         <line
           key={`${a}-${b}`}
-          x1={from.x}
-          y1={from.y}
-          x2={to.x}
-          y2={to.y}
-          stroke="url(#edgeGradient)"
-          strokeWidth="1.5"
-          strokeDasharray={length}
-          strokeDashoffset={length}
-          style={{
-            animation: `draw-line 1.2s ease-out ${0.15 * i}s forwards`,
-          }}
+          x1={from.x} y1={from.y} x2={to.x} y2={to.y}
+          stroke="url(#edgeGradient)" strokeWidth="1.5"
+          strokeDasharray={length} strokeDashoffset={length}
+          style={{ animation: `draw-line 1.2s ease-out ${0.15 * i}s forwards` }}
         />
       );
     })}
-
     {nodes.map((n, i) => (
       <g key={n.id}>
-        <circle
-          cx={n.x}
-          cy={n.y}
-          r={n.r + 6}
-          fill="#C9A24B"
-          opacity="0.12"
-          style={{
-            animation: `pulse-ring 2.8s ease-in-out ${0.2 * i}s infinite`,
-            transformOrigin: `${n.x}px ${n.y}px`,
-          }}
-        />
-        <circle
-          cx={n.x}
-          cy={n.y}
-          r={n.r}
-          fill={n.id === "mentor" ? "#C9A24B" : "#F7F5F0"}
-          stroke="#C9A24B"
-          strokeWidth="1.5"
-          opacity="0"
-          style={{ animation: `fade-in 0.5s ease-out ${0.15 * i + 0.3}s forwards` }}
-        />
+        <circle cx={n.x} cy={n.y} r={n.r + 6} fill="#C9A24B" opacity="0.12"
+          style={{ animation: `pulse-ring 2.8s ease-in-out ${0.2 * i}s infinite`, transformOrigin: `${n.x}px ${n.y}px` }} />
+        <circle cx={n.x} cy={n.y} r={n.r} fill={n.id === "mentor" ? "#C9A24B" : "#F7F5F0"}
+          stroke="#C9A24B" strokeWidth="1.5" opacity="0"
+          style={{ animation: `fade-in 0.5s ease-out ${0.15 * i + 0.3}s forwards` }} />
       </g>
     ))}
-
     <style>{`
-      @keyframes draw-line {
-        to { stroke-dashoffset: 0; }
-      }
-      @keyframes fade-in {
-        to { opacity: 1; }
-      }
-      @keyframes pulse-ring {
-        0%, 100% { transform: scale(1); opacity: 0.12; }
-        50% { transform: scale(1.35); opacity: 0.22; }
-      }
+      @keyframes draw-line { to { stroke-dashoffset: 0; } }
+      @keyframes fade-in { to { opacity: 1; } }
+      @keyframes pulse-ring { 0%, 100% { transform: scale(1); opacity: 0.12; } 50% { transform: scale(1.35); opacity: 0.22; } }
     `}</style>
   </svg>
 );

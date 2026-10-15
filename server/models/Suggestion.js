@@ -4,7 +4,7 @@ const suggestionSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     type: { type: String, enum: ["suggestion", "feedback"], required: true },
-    targetType: { type: String, enum: ["event", "club", "facility", "platform", "other"], default: "platform" },
+    targetType: { type: String, enum: ["club", "facility", "platform", "other"], default: "platform" },
     text: { type: String, required: true, trim: true, maxlength: 2000 },
     status: { type: String, enum: ["pending", "reviewed"], default: "pending" },
   },

@@ -1,89 +1,49 @@
-import { useState } from "react";
-import SpotlightOrbit from "./SpotlightOrbit";
-import SpotlightModal from "./SpotlightModal";
+import { useState, useEffect } from "react";
+import api from "../../services/api";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiUsers, FiAward, FiBriefcase, FiX } from "react-icons/fi";
+import { FiStar, FiX, FiUser } from "react-icons/fi";
+import SpotlightModal from "./SpotlightModal";
 
-const SPOTLIGHT_DATA = {
-  students: [
-    { id: "s1", role: "student", name: "Rahul Sharma", department: "Computer Science", year: "3rd Year", bio: "Full-stack web developer passionate about React and Node.js. Looking for summer internships." },
-    { id: "s2", role: "student", name: "Priya Patel", department: "Information Technology", year: "4th Year", bio: "AI/ML enthusiast and head of the technical club. Building intelligent systems." },
-    { id: "s3", role: "student", name: "Arjun Reddy", department: "Electronics", year: "3rd Year", bio: "Hardware hacker, IoT developer, and open source contributor." },
-    { id: "s4", role: "student", name: "Neha Gupta", department: "Computer Science", year: "2nd Year", bio: "Competitive programmer and UI/UX designer." },
-    { id: "s5", role: "student", name: "Vikram Singh", department: "Mechanical", year: "4th Year", bio: "Automotive design lead for the college racing team." },
-    { id: "s6", role: "student", name: "Ananya Iyer", department: "Information Technology", year: "3rd Year", bio: "Cloud computing learner and technical writer." }
-  ],
-  faculty: [
-    { id: "f1", role: "teacher", name: "Dr. Rajesh K.", department: "Computer Science", designation: "Professor", bio: "20+ years of research in Distributed Systems and Cloud Computing." },
-    { id: "f2", role: "teacher", name: "Prof. Meera R.", department: "Information Technology", designation: "Associate Professor", bio: "Specializes in Data Science and Machine Learning algorithms." },
-    { id: "f3", role: "teacher", name: "Dr. Suresh M.", department: "Electronics", designation: "HOD", bio: "Leading research in embedded systems and VLSI design." },
-    { id: "f4", role: "teacher", name: "Prof. Anita D.", department: "Computer Science", designation: "Assistant Professor", bio: "Teaches Web Technologies and oversees the student developer clubs." },
-    { id: "f5", role: "teacher", name: "Dr. Vikram J.", department: "Mechanical", designation: "Professor", bio: "Robotics and Automation expert." }
-  ],
-  alumni: [
-    { id: "a1", role: "alumni", name: "Karthik Nair", department: "Computer Science", degree: "B.Tech", batch: "2019-2023", currentRole: "Software Engineer", currentCompany: "Google", bio: "Working on scalable distributed systems. Happy to mentor current students!" },
-    { id: "a2", role: "alumni", name: "Sneha Rao", department: "Information Technology", degree: "B.Tech", batch: "2018-2022", currentRole: "Product Manager", currentCompany: "Microsoft", bio: "Transitioned from SWE to Product. Building enterprise tools." },
-    { id: "a3", role: "alumni", name: "Manoj Tiwari", department: "Electronics", degree: "B.Tech", batch: "2017-2021", currentRole: "Hardware Engineer", currentCompany: "Intel", bio: "Designing next-gen processors. Reach out for semiconductor queries." },
-    { id: "a4", role: "alumni", name: "Divya K.", department: "Computer Science", degree: "B.Tech", batch: "2020-2024", currentRole: "SDE I", currentCompany: "Amazon", bio: "Recent grad currently in the AWS team." },
-    { id: "a5", role: "alumni", name: "Rohan Mehta", department: "Mechanical", degree: "B.Tech", batch: "2016-2020", currentRole: "Design Engineer", currentCompany: "Tesla", bio: "Working on manufacturing automation." },
-    { id: "a6", role: "alumni", name: "Pooja Verma", department: "Information Technology", degree: "B.Tech", batch: "2019-2023", currentRole: "Data Scientist", currentCompany: "IBM", bio: "Focusing on enterprise AI solutions." }
-  ]
-};
 
-const CATEGORIES = [
-  { id: 'students', label: 'Students', icon: FiUsers },
-  { id: 'faculty', label: 'Faculty', icon: FiAward },
-  { id: 'alumni', label: 'Alumni', icon: FiBriefcase }
-];
 
 const NECSpotlight = () => {
-  const [activeOrbitCategory, setActiveOrbitCategory] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [spotlightUsers, setSpotlightUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && spotlightUsers.length === 0) {
+      setIsLoading(true);
+      api.get("/users/spotlight")
+        .then(res => setSpotlightUsers(res.data.spotlight || []))
+        .catch(err => console.error(err))
+        .finally(() => setIsLoading(false));
+    }
+  }, [isOpen]);
   const [selectedPerson, setSelectedPerson] = useState(null);
 
-  const getTitle = () => {
-    switch (activeOrbitCategory) {
-      case "students": return "Student";
-      case "faculty": return "Faculty";
-      case "alumni": return "Alumni";
-      default: return "Spotlight";
-    }
-  };
-
   return (
-    <div className="mb-8 mt-2">
-      <div className="mb-4 px-1 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-ink flex items-center gap-2">
-          NEC Spotlight
-        </h2>
+    <>
+      {/* Floating Button */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <button
+          onClick={() => setIsOpen(true)}
+          className="flex items-center justify-center gap-2 rounded-full bg-brand px-5 py-3 font-bold text-white shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all"
+        >
+          <FiStar size={18} />
+          <span>Spotlight</span>
+        </button>
       </div>
 
-      {/* Default Horizontal Layout */}
-      <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide px-2">
-        {CATEGORIES.map(category => (
-          <button 
-            key={category.id} 
-            onClick={() => setActiveOrbitCategory(category.id)}
-            className="flex flex-col items-center gap-2 group outline-none shrink-0"
-          >
-            <div className="h-16 w-16 flex items-center justify-center rounded-full border-2 border-slate-200 group-hover:border-brand transition-colors bg-white shadow-sm text-slate-500 group-hover:text-brand">
-              <category.icon size={24} />
-            </div>
-            <span className="text-[12px] font-semibold text-slate-500 group-hover:text-ink transition-colors">
-              {category.label}
-            </span>
-          </button>
-        ))}
-      </div>
-
-      {/* Interactive Orbit Popup / Modal */}
+      {/* Main Spotlight Drawer / Popup */}
       <AnimatePresence>
-        {activeOrbitCategory && (
-          <div className="fixed inset-0 z-40 flex items-center justify-center p-4">
+        {isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setActiveOrbitCategory(null)}
+              onClick={() => setIsOpen(false)}
               className="absolute inset-0 bg-ink/40 backdrop-blur-sm"
             />
             
@@ -91,34 +51,63 @@ const NECSpotlight = () => {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md rounded-2xl bg-slate-50 shadow-2xl border border-slate-200 overflow-hidden flex flex-col items-center pt-8 pb-12"
+              className="relative w-full max-w-lg rounded-2xl bg-white shadow-2xl overflow-hidden flex flex-col max-h-[80vh]"
             >
-              <button 
-                onClick={() => setActiveOrbitCategory(null)}
-                className="absolute top-4 right-4 h-8 w-8 flex items-center justify-center rounded-full bg-white hover:bg-slate-100 text-slate-500 hover:text-ink transition-colors shadow-sm border border-slate-200 z-50"
-              >
-                <FiX size={18} />
-              </button>
-              
-              <h3 className="text-sm font-bold text-ink uppercase tracking-wider mb-2">Interactive Orbit</h3>
-              <p className="text-[11px] text-slate-500 mb-8">Swipe or use arrows to rotate.</p>
+              <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50">
+                <div className="flex items-center gap-2 text-ink font-bold">
+                  <FiStar className="text-brand" />
+                  <h2>NEC Spotlight</h2>
+                </div>
+                <button 
+                  onClick={() => setIsOpen(false)}
+                  className="h-8 w-8 flex items-center justify-center rounded-full bg-white hover:bg-slate-100 text-slate-500 hover:text-ink transition-colors shadow-sm border border-slate-200"
+                >
+                  <FiX size={18} />
+                </button>
+              </div>
 
-              <SpotlightOrbit 
-                title={getTitle()} 
-                items={SPOTLIGHT_DATA[activeOrbitCategory]} 
-                onPersonClick={setSelectedPerson} 
-              />
+              <div className="p-4 overflow-y-auto bg-white flex-1 space-y-3">
+                {spotlightUsers.length === 0 ? (
+                  isLoading ? <p className="text-center text-slate-500 py-10">Loading spotlight...</p> : <p className="text-center text-slate-500 py-10">No one is currently featured in NEC Spotlight.</p>
+                ) : (
+                  spotlightUsers.map((person) => (
+                    <button
+                      key={person.id}
+                      onClick={() => setSelectedPerson(person)}
+                      className="w-full text-left bg-slate-50 border border-slate-100 rounded-xl p-4 flex items-center gap-4 hover:border-brand/50 hover:bg-brand/5 transition-colors group"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-slate-200 flex-shrink-0 flex items-center justify-center text-slate-400 overflow-hidden">
+                        {person.profilePhoto ? (
+                          <img src={person.profilePhoto} alt={person.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <FiUser size={20} />
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-bold text-ink text-sm truncate">{person.name}</h4>
+                        <div className="text-xs text-slate-500 mt-0.5 flex gap-1 items-center">
+                          <span className="capitalize font-semibold text-brand">{person.role}</span>
+                          <span>&middot;</span>
+                          <span className="truncate">{person.department}</span>
+                        </div>
+                      </div>
+                    </button>
+                  ))
+                )}
+              </div>
             </motion.div>
           </div>
         )}
       </AnimatePresence>
 
-      {/* Person Details Modal (Stacked above the Orbit Modal) */}
-      <SpotlightModal 
-        person={selectedPerson} 
-        onClose={() => setSelectedPerson(null)} 
-      />
-    </div>
+      {/* Reusing existing Person Profile Modal */}
+      {selectedPerson && (
+        <SpotlightModal 
+          person={selectedPerson} 
+          onClose={() => setSelectedPerson(null)} 
+        />
+      )}
+    </>
   );
 };
 

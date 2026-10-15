@@ -1,0 +1,786 @@
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, Link } from "react-router-dom";
+import {
+  FiCalendar, FiBook, FiUsers, FiFileText, FiLink,
+  FiBell, FiAward, FiPlus, FiCheck, FiX, FiCopy,
+  FiChevronLeft, FiUserPlus, FiTrash2
+} from "react-icons/fi";
+import api from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
+import DashboardLayout from "../../layouts/DashboardLayout";
+
+/* ─────────────────────────────────────────────
+   Tiny reusable components
+───────────────────────────────────────────── */
+const Toast = ({ msg, ok }) => (
+  <div className={`fixed bottom-6 right-6 z-[200] flex items-center gap-3 rounded-xl px-5 py-3 shadow-xl text-white text-sm font-semibold animate-fade-in ${ok ? "bg-emerald-600" : "bg-red-600"}`}>
+    {ok ? <FiCheck size={16} /> : "⚠"} {msg}
+  </div>
+);
+
+const Spinner = ({ size = 6 }) => (
+  <div className={`h-${size} w-${size} animate-spin rounded-full border-2 border-brand border-t-transparent`} />
+);
+
+const Avatar = ({ user: u, size = 10 }) => (
+  <div className={`h-${size} w-${size} shrink-0 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-200`}>
+    {u?.profilePhoto
+      ? <img src={u.profilePhoto} alt={u.name} className="w-full h-full object-cover" />
+      : <span className="text-xs font-bold text-slate-500">{u?.name?.[0]?.toUpperCase() || "?"}</span>}
+  </div>
+);
+
+/* Invite‑code chip with copy */
+const CodeChip = ({ code }) => {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(code).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+  return (
+    <div className="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5">
+      <span className="font-mono font-bold text-sm text-slate-700 tracking-widest">{code}</span>
+      <button onClick={copy} title="Copy code" className="flex items-center gap-1 text-slate-400 hover:text-brand transition-colors">
+        {copied ? <FiCheck size={13} className="text-emerald-500" /> : <FiCopy size={13} />}
+        <span className="text-xs">{copied ? "Copied!" : "Copy"}</span>
+      </button>
+    </div>
+  );
+};
+
+/* Local date string "today" without UTC shift */
+const todayLocal = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+};
+
+const fmtDate = (str) =>
+  new Date(str + "T12:00:00").toLocaleDateString(undefined, {
+    weekday: "long", year: "numeric", month: "long", day: "numeric",
+  });
+
+const fmtShort = (str) =>
+  new Date(str + "T12:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric" });
+
+/* ─────────────────────────────────────────────
+   Main Component
+───────────────────────────────────────────── */
+const ClassView = () => {
+  const { id } = useParams();
+  const { user } = useAuth();
+
+  /* ── core state ── */
+  const [classData, setClassData] = useState(null);
+  const [isTeacher, setIsTeacher] = useState(false);
+  const [members, setMembers] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const [records, setRecords] = useState([]);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [pageError, setPageError] = useState("");
+
+  /* ── date ── */
+  const [selectedDate, setSelectedDate] = useState(todayLocal());
+
+  /* ── tabs ── */
+  const [activeTab, setActiveTab] = useState("calendar");
+
+  /* ── toast ── */
+  const [toast, setToast] = useState(null);
+  const showToast = useCallback((msg, ok = true) => {
+    setToast({ msg, ok });
+    setTimeout(() => setToast(null), 3500);
+  }, []);
+
+  /* ── record form ── */
+  const [showRecordModal, setShowRecordModal] = useState(false);
+  const [recSaving, setRecSaving] = useState(false);
+  const [recForm, setRecForm] = useState({
+    date: todayLocal(), topic: "", notes: "",
+    announcement: "",
+    assignmentTitle: "", assignmentDesc: "", assignmentDue: "",
+    fileTitle: "", fileUrl: "",
+    linkTitle: "", linkUrl: "",
+  });
+
+  /* ── invite‑student modal ── */
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [invSearch, setInvSearch] = useState("");
+  const [invResults, setInvResults] = useState([]);
+  const [invLoading, setInvLoading] = useState(false);
+  const [invSending, setInvSending] = useState(null); /* userId being sent */
+
+  /* ── request handling ── */
+  const [reqBusy, setReqBusy] = useState(null); /* requestId being processed */
+
+  /* ─────────────────────────
+     Load all class data
+  ───────────────────────── */
+  const loadAll = useCallback(async () => {
+    try {
+      const [clsRes, membRes, recRes] = await Promise.all([
+        api.get(`/classrooms/${id}`),
+        api.get(`/classrooms/${id}/members`),
+        api.get(`/classrooms/${id}/records`),
+      ]);
+      setClassData(clsRes.data.class);
+      setIsTeacher(clsRes.data.isTeacher);
+      setMembers(membRes.data.members || []);
+      setRequests(membRes.data.requests || []);
+      setRecords(recRes.data.records || []);
+    } catch (err) {
+      setPageError(err.response?.data?.message || "Failed to load class. You may not have access.");
+    } finally {
+      setPageLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => { loadAll(); }, [loadAll]);
+
+  /* ─────────────────────────
+     Add Academic Record
+  ───────────────────────── */
+  const openRecordModal = (date) => {
+    setRecForm({
+      date, topic: "", notes: "", announcement: "",
+      assignmentTitle: "", assignmentDesc: "", assignmentDue: "",
+      fileTitle: "", fileUrl: "", linkTitle: "", linkUrl: "",
+    });
+    setShowRecordModal(true);
+  };
+
+  const handleSaveRecord = async (e) => {
+    e.preventDefault();
+    if (!recForm.topic.trim() && !recForm.notes.trim() && !recForm.announcement.trim()) {
+      showToast("Add at least a Topic, Notes, or Announcement", false);
+      return;
+    }
+    setRecSaving(true);
+    try {
+      const payload = { date: recForm.date };
+      if (recForm.topic) payload.topic = recForm.topic;
+      if (recForm.notes) payload.notes = recForm.notes;
+      if (recForm.announcement) payload.announcement = recForm.announcement;
+      if (recForm.assignmentTitle) {
+        payload.assignment = {
+          title: recForm.assignmentTitle,
+          description: recForm.assignmentDesc,
+          dueDate: recForm.assignmentDue || undefined,
+        };
+      }
+      if (recForm.fileUrl) payload.files = [{ title: recForm.fileTitle || "File", url: recForm.fileUrl }];
+      if (recForm.linkUrl) payload.links = [{ title: recForm.linkTitle || "Link", url: recForm.linkUrl }];
+
+      const res = await api.post(`/classrooms/${id}/records`, payload);
+      setRecords(prev => [...prev, res.data.record]);
+      setSelectedDate(recForm.date);
+      setShowRecordModal(false);
+      showToast("Record saved successfully!");
+    } catch (err) {
+      showToast(err.response?.data?.message || "Failed to save record", false);
+    } finally {
+      setRecSaving(false);
+    }
+  };
+
+  /* ─────────────────────────
+     Accept / Reject Request
+  ───────────────────────── */
+  const handleRequest = async (reqId, action) => {
+    setReqBusy(reqId);
+    try {
+      await api.patch(`/classrooms/${id}/requests/${reqId}`, { action });
+      showToast(action === "accept" ? "Student accepted!" : "Request rejected");
+      /* refresh members */
+      const membRes = await api.get(`/classrooms/${id}/members`);
+      setMembers(membRes.data.members || []);
+      setRequests(membRes.data.requests || []);
+    } catch (err) {
+      showToast(err.response?.data?.message || "Action failed", false);
+    } finally {
+      setReqBusy(null);
+    }
+  };
+
+  /* ─────────────────────────
+     Invite Student
+  ───────────────────────── */
+  const searchStudents = async (q) => {
+    setInvSearch(q);
+    if (!q.trim()) { setInvResults([]); return; }
+    setInvLoading(true);
+    try {
+      const { data } = await api.get(`/users/search?query=${encodeURIComponent(q)}&role=student`);
+      const memberIds = new Set(members.map(m => m._id));
+      setInvResults((data.users || []).filter(u => !memberIds.has(u._id)));
+    } catch { setInvResults([]); }
+    finally { setInvLoading(false); }
+  };
+
+  const handleInvite = async (userId) => {
+    setInvSending(userId);
+    try {
+      await api.post(`/classrooms/${id}/invite`, { userId });
+      showToast("Invitation sent!");
+      setInvResults(prev => prev.filter(u => u._id !== userId));
+    } catch (err) {
+      showToast(err.response?.data?.message || "Failed to send invite", false);
+    } finally {
+      setInvSending(null);
+    }
+  };
+
+  /* ─────────────────────────
+     Derived values
+  ───────────────────────── */
+  const uniqueDates = [...new Set(records.map(r => r.date))].sort().reverse();
+  const dateRecords = records.filter(r => r.date === selectedDate);
+
+  /* ── Loading / Error ── */
+  if (pageLoading) return (
+    <DashboardLayout>
+      <div className="flex justify-center items-center py-32"><Spinner size={10} /></div>
+    </DashboardLayout>
+  );
+  if (pageError) return (
+    <DashboardLayout>
+      <div className="max-w-lg mx-auto mt-20 bg-red-50 border border-red-200 rounded-2xl p-8 text-center">
+        <p className="text-red-600 font-bold text-lg mb-2">Access Denied</p>
+        <p className="text-red-500 text-sm mb-5">{pageError}</p>
+        <Link to="/academic" className="text-brand font-semibold text-sm hover:underline flex items-center gap-1 justify-center">
+          <FiChevronLeft size={14} /> Back to Academics
+        </Link>
+      </div>
+    </DashboardLayout>
+  );
+
+  /* ═══════════════════════════════════════
+     RENDER
+  ════════════════════════════════════════ */
+  return (
+    <DashboardLayout>
+      <div className="mx-auto max-w-6xl space-y-6 pb-20">
+
+        {/* ── Back link ── */}
+        <Link to="/academic" className="inline-flex items-center gap-1 text-sm text-slate-500 hover:text-brand transition-colors">
+          <FiChevronLeft size={16} /> Academics
+        </Link>
+
+        {/* ══════════════════════════
+            CLASS HEADER
+        ══════════════════════════ */}
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          {/* colour bar */}
+          <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg,#0d9488,#14b8a6)" }} />
+
+          <div className="p-6 flex flex-col md:flex-row md:items-start justify-between gap-5">
+            {/* left */}
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                {classData.subject && (
+                  <span className="bg-teal-50 text-teal-700 border border-teal-100 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">
+                    {classData.subject}
+                  </span>
+                )}
+                {classData.section && (
+                  <span className="bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full text-xs font-semibold">Sec {classData.section}</span>
+                )}
+                {classData.semester && (
+                  <span className="bg-slate-100 text-slate-600 px-2.5 py-0.5 rounded-full text-xs font-semibold">Sem {classData.semester}</span>
+                )}
+              </div>
+              <h1 className="font-display text-2xl md:text-3xl font-bold text-ink leading-tight truncate">{classData.name}</h1>
+              {classData.description && <p className="text-slate-500 text-sm mt-1">{classData.description}</p>}
+
+              {classData.teacher?.name && (
+                <div className="flex items-center gap-2 mt-3">
+                  <Avatar user={classData.teacher} size={7} />
+                  <span className="text-xs text-slate-500 font-medium">{classData.teacher.name}</span>
+                </div>
+              )}
+            </div>
+
+            {/* right — invite code + tabs */}
+            <div className="flex flex-col items-end gap-4 shrink-0">
+              {isTeacher && classData.inviteCode && (
+                <div className="text-right">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Invite Code</p>
+                  <CodeChip code={classData.inviteCode} />
+                </div>
+              )}
+
+              {/* tab pills */}
+              <div className="flex bg-slate-100 p-1 rounded-xl gap-1">
+                {["calendar", "members", ...(isTeacher ? ["requests"] : [])].map(tab => (
+                  <button
+                    key={tab}
+                    id={`tab-${tab}`}
+                    onClick={() => setActiveTab(tab)}
+                    className={`relative px-4 py-2 text-xs font-bold rounded-lg capitalize transition-all ${
+                      activeTab === tab ? "bg-white text-ink shadow-sm" : "text-slate-500 hover:text-ink"
+                    }`}
+                  >
+                    {tab}
+                    {tab === "requests" && requests.length > 0 && (
+                      <span className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center rounded-full bg-red-500 text-white text-[9px] font-bold">
+                        {requests.length}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ══════════════════════════
+            CALENDAR TAB
+        ══════════════════════════ */}
+        {activeTab === "calendar" && (
+          <div className="flex flex-col md:flex-row gap-5">
+
+            {/* ── Timeline Sidebar ── */}
+            <aside className="md:w-56 shrink-0">
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sticky top-4">
+                <h3 className="font-bold text-xs text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                  <FiCalendar size={12} /> Timeline
+                </h3>
+
+                {/* Today button */}
+                <button
+                  id="btn-today"
+                  onClick={() => setSelectedDate(todayLocal())}
+                  className={`w-full text-left px-3 py-2 rounded-lg text-sm font-bold mb-3 transition-colors ${
+                    selectedDate === todayLocal()
+                      ? "text-white shadow-sm"
+                      : "bg-teal-50 text-teal-700 hover:bg-teal-100"
+                  }`}
+                  style={selectedDate === todayLocal() ? { background: "linear-gradient(135deg,#0d9488,#14b8a6)" } : {}}
+                >
+                  Today · {fmtShort(todayLocal())}
+                </button>
+
+                {/* Dates with records */}
+                {uniqueDates.length > 0 && (
+                  <>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">Past Records</p>
+                    <div className="space-y-1 max-h-72 overflow-y-auto pr-1">
+                      {uniqueDates.map(d => {
+                        const first = records.find(r => r.date === d);
+                        const sel = selectedDate === d;
+                        return (
+                          <button
+                            key={d}
+                            onClick={() => setSelectedDate(d)}
+                            className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                              sel ? "bg-slate-800 text-white" : "text-slate-600 hover:bg-slate-50"
+                            }`}
+                          >
+                            <div className="font-semibold">{fmtShort(d)}</div>
+                            <div className={`text-xs truncate mt-0.5 ${sel ? "text-slate-400" : "text-slate-400"}`}>
+                              {first?.topic || "Session"}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+
+                {uniqueDates.length === 0 && (
+                  <p className="text-xs text-slate-400 text-center py-3 border border-dashed border-slate-200 rounded-lg mt-2">
+                    No records yet
+                  </p>
+                )}
+              </div>
+            </aside>
+
+            {/* ── Main Day Content ── */}
+            <div className="flex-1 min-w-0 space-y-5">
+              {/* Day header row */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <h2 className="text-xl font-bold text-ink">{fmtDate(selectedDate)}</h2>
+                {isTeacher && (
+                  <button
+                    id="btn-add-record"
+                    onClick={() => openRecordModal(selectedDate)}
+                    className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold text-white shadow-md hover:opacity-90 active:scale-95 transition-all"
+                    style={{ background: "linear-gradient(135deg,#0d9488,#14b8a6)" }}
+                  >
+                    <FiPlus size={16} /> Add Record
+                  </button>
+                )}
+              </div>
+
+              {/* Records */}
+              {dateRecords.length === 0 ? (
+                <div className="bg-white rounded-2xl border-2 border-dashed border-slate-200 py-16 text-center">
+                  <FiBook className="mx-auto text-slate-300 mb-3" size={40} />
+                  <p className="text-slate-500 font-medium">No academic records for this date.</p>
+                  {isTeacher && (
+                    <button
+                      onClick={() => openRecordModal(selectedDate)}
+                      className="mt-4 inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold text-white hover:opacity-90 transition-all"
+                      style={{ background: "linear-gradient(135deg,#0d9488,#14b8a6)" }}
+                    >
+                      <FiPlus size={15} /> Add First Record for This Date
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {dateRecords.map(rec => (
+                    <article key={rec._id} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                      {/* topic bar */}
+                      {rec.topic && (
+                        <div className="px-5 py-4 border-b border-slate-100 bg-slate-50/70">
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Topic</p>
+                          <h3 className="text-lg font-bold text-ink">{rec.topic}</h3>
+                        </div>
+                      )}
+
+                      <div className="p-5 space-y-5">
+                        {/* Notes */}
+                        {rec.notes && (
+                          <div>
+                            <p className="text-[10px] font-bold text-teal-600 uppercase tracking-widest flex items-center gap-1.5 mb-2">
+                              <FiFileText size={11} /> Notes
+                            </p>
+                            <div className="text-sm text-slate-700 whitespace-pre-wrap bg-slate-50 px-4 py-3 rounded-xl border border-slate-100 leading-relaxed">
+                              {rec.notes}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Files & Links side by side */}
+                        {(rec.files?.length > 0 || rec.links?.length > 0) && (
+                          <div className="grid sm:grid-cols-2 gap-4">
+                            {rec.files?.length > 0 && (
+                              <div>
+                                <p className="text-[10px] font-bold text-teal-600 uppercase tracking-widest flex items-center gap-1.5 mb-2">
+                                  <FiFileText size={11} /> Files
+                                </p>
+                                <div className="space-y-2">
+                                  {rec.files.map((f, i) => (
+                                    <a key={i} href={f.url} target="_blank" rel="noreferrer"
+                                      className="flex items-center gap-2 text-sm font-medium text-slate-700 bg-slate-50 border border-slate-200 px-3 py-2 rounded-lg hover:border-brand hover:text-brand transition-colors">
+                                      <FiFileText size={14} className="shrink-0" /> {f.title || "Document"}
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            {rec.links?.length > 0 && (
+                              <div>
+                                <p className="text-[10px] font-bold text-teal-600 uppercase tracking-widest flex items-center gap-1.5 mb-2">
+                                  <FiLink size={11} /> Links
+                                </p>
+                                <div className="space-y-2">
+                                  {rec.links.map((l, i) => (
+                                    <a key={i} href={l.url} target="_blank" rel="noreferrer"
+                                      className="flex items-center gap-2 text-sm font-medium text-slate-700 bg-slate-50 border border-slate-200 px-3 py-2 rounded-lg hover:border-brand hover:text-brand transition-colors">
+                                      <FiLink size={14} className="shrink-0" /> {l.title || "External Link"}
+                                    </a>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Announcement */}
+                        {rec.announcement && (
+                          <div className="flex gap-3 bg-amber-50 border border-amber-200 p-4 rounded-xl">
+                            <FiBell className="text-amber-500 shrink-0 mt-0.5" size={18} />
+                            <div>
+                              <p className="text-[10px] font-bold text-amber-600 uppercase tracking-widest mb-1">Announcement</p>
+                              <p className="text-sm text-amber-900 font-medium leading-relaxed">{rec.announcement}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Assignment */}
+                        {rec.assignment?.title && (
+                          <div className="bg-indigo-50 border border-indigo-200 p-4 rounded-xl">
+                            <div className="flex items-start justify-between gap-2 mb-2">
+                              <p className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest flex items-center gap-1.5">
+                                <FiAward size={11} /> Assignment
+                              </p>
+                              {rec.assignment.dueDate && (
+                                <span className="text-[10px] font-bold bg-white text-indigo-500 border border-indigo-200 px-2.5 py-1 rounded-lg shadow-sm whitespace-nowrap">
+                                  Due: {fmtShort(rec.assignment.dueDate)}
+                                </span>
+                              )}
+                            </div>
+                            <h4 className="font-bold text-indigo-900 mb-1">{rec.assignment.title}</h4>
+                            {rec.assignment.description && (
+                              <p className="text-sm text-indigo-700 leading-relaxed">{rec.assignment.description}</p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ══════════════════════════
+            MEMBERS TAB
+        ══════════════════════════ */}
+        {activeTab === "members" && (
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <div>
+                <h2 className="text-xl font-bold text-ink">Class Members</h2>
+                <p className="text-sm text-slate-500 mt-0.5">{members.length} active student{members.length !== 1 ? "s" : ""}</p>
+              </div>
+              {isTeacher && (
+                <button
+                  id="btn-invite-students"
+                  onClick={() => { setInvSearch(""); setInvResults([]); setShowInviteModal(true); }}
+                  className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-bold text-white shadow hover:opacity-90 active:scale-95 transition-all"
+                  style={{ background: "linear-gradient(135deg,#0d9488,#14b8a6)" }}
+                >
+                  <FiUserPlus size={15} /> Invite Students
+                </button>
+              )}
+            </div>
+
+            {members.length === 0 ? (
+              <div className="border-2 border-dashed border-slate-200 rounded-xl py-10 text-center text-slate-400 text-sm">
+                No active members yet. Share the invite code.
+              </div>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {members.map(m => (
+                  <div key={m._id} className="flex items-center gap-3 p-3.5 border border-slate-100 rounded-xl hover:shadow-sm transition-shadow bg-slate-50/50">
+                    <Avatar user={m} size={10} />
+                    <div className="min-w-0">
+                      <p className="font-bold text-sm text-ink truncate">{m.name}</p>
+                      <p className="text-xs text-slate-500 capitalize">{m.role}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ══════════════════════════
+            REQUESTS TAB (teacher only)
+        ══════════════════════════ */}
+        {activeTab === "requests" && isTeacher && (
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <h2 className="text-xl font-bold text-ink mb-1">Join Requests</h2>
+            <p className="text-sm text-slate-500 mb-6">{requests.length} pending request{requests.length !== 1 ? "s" : ""}</p>
+
+            {requests.length === 0 ? (
+              <div className="border-2 border-dashed border-slate-200 rounded-xl py-10 text-center text-slate-400 text-sm">
+                No pending requests.
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {requests.map(req => (
+                  <div key={req._id} className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <Avatar user={req.user} size={10} />
+                      <div className="min-w-0">
+                        <p className="font-bold text-sm text-ink truncate">{req.user?.name}</p>
+                        <p className="text-xs text-slate-500 truncate">{req.user?.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 shrink-0 ml-3">
+                      <button
+                        id={`btn-accept-${req._id}`}
+                        disabled={reqBusy === req._id}
+                        onClick={() => handleRequest(req._id, "accept")}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700 hover:bg-emerald-200 disabled:opacity-50 transition-colors"
+                      >
+                        {reqBusy === req._id ? <Spinner size={3} /> : <FiCheck size={13} />}
+                        Accept
+                      </button>
+                      <button
+                        id={`btn-reject-${req._id}`}
+                        disabled={reqBusy === req._id}
+                        onClick={() => handleRequest(req._id, "reject")}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-red-100 text-red-600 hover:bg-red-200 disabled:opacity-50 transition-colors"
+                      >
+                        <FiX size={13} /> Reject
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>{/* end main container */}
+
+      {/* ══════════════════════════
+          ADD RECORD MODAL
+      ══════════════════════════ */}
+      {showRecordModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl my-8 overflow-hidden">
+            {/* header */}
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+              <div>
+                <h3 className="font-bold text-ink text-lg">Add Academic Record</h3>
+                <p className="text-xs text-slate-500 mt-0.5">{fmtDate(recForm.date)}</p>
+              </div>
+              <button onClick={() => setShowRecordModal(false)} className="h-8 w-8 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-200 text-xl transition-colors">×</button>
+            </div>
+
+            <form onSubmit={handleSaveRecord} className="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
+              {/* Date selector */}
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Date</label>
+                <input
+                  type="date"
+                  value={recForm.date}
+                  onChange={e => setRecForm({ ...recForm, date: e.target.value })}
+                  className="border border-slate-200 rounded-xl px-4 py-2 text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all"
+                />
+              </div>
+
+              {/* Topic */}
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Topic</label>
+                <input
+                  id="rec-topic"
+                  placeholder="e.g. Introduction to Binary Trees"
+                  value={recForm.topic}
+                  onChange={e => setRecForm({ ...recForm, topic: e.target.value })}
+                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all"
+                />
+              </div>
+
+              {/* Notes */}
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Notes</label>
+                <textarea
+                  id="rec-notes"
+                  rows={4}
+                  placeholder="Class notes, lecture summary..."
+                  value={recForm.notes}
+                  onChange={e => setRecForm({ ...recForm, notes: e.target.value })}
+                  className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all resize-none"
+                />
+              </div>
+
+              {/* File + Link */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-2">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest">Attach File URL</label>
+                  <input placeholder="File Title" value={recForm.fileTitle} onChange={e => setRecForm({ ...recForm, fileTitle: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand transition-all" />
+                  <input placeholder="https://... (URL)" value={recForm.fileUrl} onChange={e => setRecForm({ ...recForm, fileUrl: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand transition-all" />
+                </div>
+                <div className="bg-slate-50 border border-slate-100 rounded-xl p-4 space-y-2">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest">Add Link</label>
+                  <input placeholder="Link Title" value={recForm.linkTitle} onChange={e => setRecForm({ ...recForm, linkTitle: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand transition-all" />
+                  <input placeholder="https://..." value={recForm.linkUrl} onChange={e => setRecForm({ ...recForm, linkUrl: e.target.value })} className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand transition-all" />
+                </div>
+              </div>
+
+              {/* Announcement */}
+              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                <label className="block text-xs font-bold text-amber-600 uppercase tracking-widest mb-2 flex items-center gap-1.5"><FiBell size={11} /> Announcement (optional)</label>
+                <textarea rows={2} placeholder="Important announcement to students..." value={recForm.announcement} onChange={e => setRecForm({ ...recForm, announcement: e.target.value })} className="w-full border border-amber-200 rounded-lg px-3 py-2 text-sm text-ink outline-none focus:border-amber-400 bg-white resize-none transition-all" />
+              </div>
+
+              {/* Assignment */}
+              <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 space-y-3">
+                <label className="block text-xs font-bold text-indigo-600 uppercase tracking-widest flex items-center gap-1.5"><FiAward size={11} /> Assignment (optional)</label>
+                <input placeholder="Assignment Title" value={recForm.assignmentTitle} onChange={e => setRecForm({ ...recForm, assignmentTitle: e.target.value })} className="w-full border border-indigo-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-indigo-400 bg-white transition-all" />
+                <textarea rows={2} placeholder="Description..." value={recForm.assignmentDesc} onChange={e => setRecForm({ ...recForm, assignmentDesc: e.target.value })} className="w-full border border-indigo-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-indigo-400 bg-white resize-none transition-all" />
+                <div className="flex items-center gap-3">
+                  <label className="text-xs font-semibold text-indigo-600">Due Date:</label>
+                  <input type="date" value={recForm.assignmentDue} onChange={e => setRecForm({ ...recForm, assignmentDue: e.target.value })} className="border border-indigo-200 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-indigo-400 bg-white transition-all" />
+                </div>
+              </div>
+
+              {/* Submit */}
+              <div className="flex gap-3 pt-2 sticky bottom-0 bg-white pb-1">
+                <button type="button" onClick={() => setShowRecordModal(false)} className="flex-1 rounded-xl border border-slate-200 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors">
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  id="btn-save-record"
+                  disabled={recSaving}
+                  className="flex-1 rounded-xl py-2.5 text-sm font-bold text-white shadow-md hover:opacity-90 active:scale-95 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+                  style={{ background: "linear-gradient(135deg,#0d9488,#14b8a6)" }}
+                >
+                  {recSaving ? <><Spinner size={4} /> Saving…</> : "Save Record"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ══════════════════════════
+          INVITE STUDENT MODAL
+      ══════════════════════════ */}
+      {showInviteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+              <h3 className="font-bold text-ink text-lg">Invite Students</h3>
+              <button onClick={() => setShowInviteModal(false)} className="h-8 w-8 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-200 text-xl transition-colors">×</button>
+            </div>
+            <div className="p-6">
+              <input
+                id="invite-search"
+                placeholder="Search students by name…"
+                value={invSearch}
+                onChange={e => searchStudents(e.target.value)}
+                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all mb-4"
+                autoFocus
+              />
+              <div className="min-h-[80px] max-h-[55vh] overflow-y-auto space-y-2">
+                {invLoading ? (
+                  <div className="flex justify-center py-8"><Spinner size={6} /></div>
+                ) : invResults.length > 0 ? (
+                  invResults.map(u => (
+                    <div key={u._id} className="flex items-center justify-between p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <Avatar user={u} size={9} />
+                        <div className="min-w-0">
+                          <p className="font-bold text-sm text-ink truncate">{u.name}</p>
+                          <p className="text-xs text-slate-500 truncate">{u.email}</p>
+                        </div>
+                      </div>
+                      <button
+                        id={`btn-invite-${u._id}`}
+                        disabled={invSending === u._id}
+                        onClick={() => handleInvite(u._id)}
+                        className="ml-3 shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100 disabled:opacity-50 transition-colors"
+                      >
+                        {invSending === u._id ? <Spinner size={3} /> : <FiUserPlus size={12} />}
+                        Invite
+                      </button>
+                    </div>
+                  ))
+                ) : invSearch.trim() && !invLoading ? (
+                  <div className="text-center py-6 text-slate-400 text-sm">No students found for "{invSearch}"</div>
+                ) : !invSearch.trim() ? (
+                  <div className="text-center py-6 text-slate-400 text-sm">Start typing to search students</div>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {toast && <Toast msg={toast.msg} ok={toast.ok} />}
+    </DashboardLayout>
+  );
+};
+
+export default ClassView;

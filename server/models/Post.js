@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+﻿import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema(
   {
@@ -9,8 +9,14 @@ const postSchema = new mongoose.Schema(
     },
     content: {
       type: String,
-      required: [true, "Post content is required"],
       trim: true,
+    },
+    mediaUrl: {
+      type: String,
+    },
+    mediaType: {
+      type: String, // 'image' or 'video'
+      enum: ['image', 'video'],
     },
     likes: [
       {
@@ -21,6 +27,14 @@ const postSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Require content OR mediaUrl
+postSchema.pre('validate', function(next) {
+  if (!this.content && !this.mediaUrl) {
+    this.invalidate('content', 'Post must have either content or media');
+  }
+  next();
+});
 
 const Post = mongoose.model("Post", postSchema);
 export default Post;

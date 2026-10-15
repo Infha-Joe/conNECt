@@ -81,7 +81,7 @@ const LeaderboardTab = () => {
       <div className="mt-6 flex items-center justify-between">
         <p className="text-sm font-semibold text-ink">Challenges</p>
         {user?.role === "admin" && (
-          <button onClick={() => setShowCreate((s) => !s)} className="flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-parchment hover:bg-ink-light">
+          <button onClick={() => setShowCreate((s) => !s)} className="flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-white hover:bg-ink-light">
             <Plus size={14} /> New challenge
           </button>
         )}
@@ -109,7 +109,7 @@ const LeaderboardTab = () => {
             <input type="number" value={form.points} onChange={(e) => setForm((p) => ({ ...p, points: e.target.value }))} placeholder="Points"
               className="rounded-lg border border-ink/15 px-3 py-2 text-sm outline-none focus:border-brass" />
           </div>
-          <button type="submit" className="rounded-lg bg-ink px-4 py-1.5 text-sm font-semibold text-parchment hover:bg-ink-light">Create challenge</button>
+          <button type="submit" className="rounded-lg bg-ink px-4 py-1.5 text-sm font-semibold text-white hover:bg-ink-light">Create challenge</button>
         </form>
       )}
 

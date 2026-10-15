@@ -64,13 +64,13 @@ const AdminUsersTab = () => {
 
         {users.map((u) => (
           <div key={u._id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-ink/10 bg-white p-3">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 min-w-0">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-ink/5 text-sm font-medium text-ink">
                 {u.name?.[0]?.toUpperCase()}
               </div>
-              <div>
-                <p className="text-sm font-semibold text-ink">{u.name}</p>
-                <p className="text-xs text-slate-text">{u.email}</p>
+              <div className="min-w-0">
+<p className="text-sm font-semibold text-ink break-words">{u.name}</p>
+                <p className="text-xs text-slate-text break-words truncate">{u.email}</p>
               </div>
             </div>
 

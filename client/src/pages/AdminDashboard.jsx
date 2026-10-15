@@ -25,7 +25,7 @@ const AdminDashboard = () => {
 
   return (
     <DashboardLayout>
-      <div className="mx-auto max-w-3xl">
+      <div className="w-full">
         <h1 className="font-display text-2xl font-medium text-ink">Admin Dashboard</h1>
         <p className="mt-1 text-sm text-slate-text">Platform management, users, departments, and moderation.</p>
 
@@ -35,7 +35,7 @@ const AdminDashboard = () => {
               key={id}
               onClick={() => setActiveTab(id)}
               className={`flex flex-1 items-center justify-center gap-1.5 rounded-md py-2 text-xs font-medium transition sm:text-sm ${
-                activeTab === id ? "bg-ink text-parchment" : "text-slate-text hover:bg-ink/5 hover:text-ink"
+                activeTab === id ? "bg-ink text-white" : "text-slate-text hover:bg-ink/5 hover:text-ink"
               }`}
             >
               <Icon size={15} />

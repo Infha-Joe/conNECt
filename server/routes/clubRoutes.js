@@ -2,7 +2,7 @@ import express from "express";
 import {
   createClub, getClubs, getClub, updateClub, deleteClub, joinClub, leaveClub,
 } from "../controllers/clubController.js";
-import { protect } from "../middleware/auth.js";
+import { protect, restrictTo } from "../middleware/auth.js";
 import { authorize } from "../middleware/roleCheck.js";
 
 const router = express.Router();

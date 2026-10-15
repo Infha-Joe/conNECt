@@ -47,7 +47,7 @@ const RequestBoardTab = () => {
       <div className="flex items-center justify-between">
         <button
           onClick={() => setShowCreate((s) => !s)}
-          className="flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-parchment transition hover:bg-ink-light"
+          className="flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-ink-light"
         >
           <Plus size={16} />
           Post a request
@@ -59,7 +59,7 @@ const RequestBoardTab = () => {
               key={s}
               onClick={() => setFilter(s)}
               className={`rounded-md px-3 py-1 text-xs font-medium capitalize transition ${
-                filter === s ? "bg-ink text-parchment" : "text-slate-text hover:bg-ink/5"
+                filter === s ? "bg-ink text-white" : "text-slate-text hover:bg-ink/5"
               }`}
             >
               {s}
@@ -93,7 +93,7 @@ const RequestBoardTab = () => {
               <option key={o.value} value={o.value}>{o.label}</option>
             ))}
           </select>
-          <button type="submit" className="rounded-lg bg-ink px-4 py-1.5 text-sm font-semibold text-parchment hover:bg-ink-light">
+          <button type="submit" className="rounded-lg bg-ink px-4 py-1.5 text-sm font-semibold text-white hover:bg-ink-light">
             Post request
           </button>
         </form>
@@ -137,7 +137,7 @@ const RequestBoardTab = () => {
             {r.status === "open" && r.user?._id !== user?._id && (
               <button
                 onClick={() => helpWith(r._id)}
-                className="mt-3 flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-parchment hover:bg-ink-light"
+                className="mt-3 flex items-center gap-1.5 rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-white hover:bg-ink-light"
               >
                 <HandHelping size={14} />
                 I can help

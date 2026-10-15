@@ -1,0 +1,496 @@
+warning: in the working copy of 'client/package-lock.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/App.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/AdminDepartmentsTab.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/AdminModerationTab.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/AdminOverviewTab.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/AdminUsersTab.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/CreatePost.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/LeaderboardTab.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/NetworkConstellation.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/PollsTab.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/PostCard.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/ProtectedRoute.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/RequestBoardTab.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/SuggestionsTab.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/layout/LeftSidebar.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/spotlight/NECSpotlight.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/spotlight/SpotlightCategoryTabs.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/ui/Avatar.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/ui/Button.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/components/ui/Card.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/context/AuthContext.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/index.css', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/layouts/DashboardLayout.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/main.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/pages/ActiveMentorship.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/pages/AdminDashboard.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/pages/CommunityHub.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/pages/Dashboard.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/pages/Login.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/pages/MentorshipHub.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/pages/Profile.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/pages/Register.jsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/src/services/api.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/tailwind.config.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'client/vite.config.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/.env', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/controllers/adminController.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/controllers/authController.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/controllers/communityRequestController.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/controllers/mentorshipController.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/controllers/postController.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/middleware/auth.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/models/MentorRequest.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/models/Mentorship.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/models/MentorshipMessage.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/models/Notification.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/models/Post.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/models/Suggestion.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/models/User.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/package-lock.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/adminRoutes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/authRoutes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/clubRoutes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/communityRequestRoutes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/mentorshipRoutes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/pollRoutes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/postRoutes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/suggestionRoutes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/routes/userRoutes.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/server.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'server/services/socket.service.js', LF will be replaced by CRLF the next time Git touches it
+ client/package-lock.json                           |  105 [32m++[m
+ client/package.json                                |    4 [32m+[m
+ client/src/App.jsx                                 |   82 [32m+[m[31m-[m
+ client/src/components/AdminDepartmentsTab.jsx      |    4 [32m+[m[31m-[m
+ client/src/components/AdminModerationTab.jsx       |    2 [32m+[m[31m-[m
+ client/src/components/AdminOverviewTab.jsx         |    2 [31m-[m
+ client/src/components/AdminUsersTab.jsx            |    8 [32m+[m[31m-[m
+ client/src/components/CreatePost.jsx               |  100 [32m+[m[31m-[m
+ client/src/components/LeaderboardTab.jsx           |    4 [32m+[m[31m-[m
+ client/src/components/NetworkConstellation.jsx     |   81 [32m+[m[31m-[m
+ client/src/components/PollsTab.jsx                 |    4 [32m+[m[31m-[m
+ client/src/components/PostCard.jsx                 |  289 [32m++++[m[31m-[m
+ client/src/components/ProtectedRoute.jsx           |    2 [32m+[m[31m-[m
+ client/src/components/RequestBoardTab.jsx          |    8 [32m+[m[31m-[m
+ client/src/components/SuggestionsTab.jsx           |    6 [32m+[m[31m-[m
+ client/src/components/layout/LeftSidebar.jsx       |  107 [32m+[m[31m-[m
+ client/src/components/spotlight/NECSpotlight.jsx   |  171 [32m++[m[31m-[m
+ .../components/spotlight/SpotlightCategoryTabs.jsx |    2 [32m+[m[31m-[m
+ client/src/components/ui/Avatar.jsx                |   21 [32m+[m[31m-[m
+ client/src/components/ui/Badge.jsx                 |    2 [32m+[m[31m-[m
+ client/src/components/ui/Button.jsx                |   17 [32m+[m[31m-[m
+ client/src/components/ui/Card.jsx                  |   10 [32m+[m[31m-[m
+ client/src/components/ui/EmptyState.jsx            |   10 [32m+[m[31m-[m
+ client/src/components/ui/StoriesBar.jsx            |    2 [32m+[m[31m-[m
+ client/src/context/AuthContext.jsx                 |   74 [32m+[m[31m-[m
+ client/src/index.css                               |   89 [32m+[m[31m-[m
+ client/src/layouts/DashboardLayout.jsx             |  191 [32m+[m[31m--[m
+ client/src/main.jsx                                |   19 [32m+[m[31m-[m
+ client/src/pages/ActiveMentorship.jsx              |  342 [32m+++++[m[31m-[m
+ client/src/pages/AdminDashboard.jsx                |    4 [32m+[m[31m-[m
+ client/src/pages/ClubDetail.jsx                    |   71 [31m--[m
+ client/src/pages/Clubs.jsx                         |   79 [31m--[m
+ client/src/pages/CommunityHub.jsx                  |    4 [32m+[m[31m-[m
+ client/src/pages/Dashboard.jsx                     |  107 [32m+[m[31m-[m
+ client/src/pages/Gamification.jsx                  |   48 [31m-[m
+ client/src/pages/Login.jsx                         |  328 [32m++++[m[31m--[m
+ client/src/pages/MentorshipHub.jsx                 | 1210 [32m+++++++++++++[m[31m-------[m
+ client/src/pages/Profile.jsx                       |  719 [32m+++++++++[m[31m---[m
+ client/src/pages/Register.jsx                      |   97 [32m+[m[31m-[m
+ client/src/services/api.js                         |    2 [32m+[m[31m-[m
+ client/tailwind.config.js                          |   39 [32m+[m[31m-[m
+ client/vite.config.js                              |    1 [32m+[m
+ conNECt-complete/conNECt/README.md                 |   46 [31m-[m
+ conNECt-complete/conNECt/client/.env.example       |    1 [31m-[m
+ conNECt-complete/conNECt/client/index.html         |   18 [31m-[m
+ conNECt-complete/conNECt/client/package.json       |   28 [31m-[m
+ conNECt-complete/conNECt/client/postcss.config.js  |    3 [31m-[m
+ conNECt-complete/conNECt/client/src/App.jsx        |   47 [31m-[m
+ .../client/src/components/AdminDepartmentsTab.jsx  |  108 [31m--[m
+ .../client/src/components/AdminModerationTab.jsx   |   89 [31m--[m
+ .../client/src/components/AdminOverviewTab.jsx     |   82 [31m--[m
+ .../client/src/components/AdminUsersTab.jsx        |  105 [31m--[m
+ .../client/src/components/AssignmentsTab.jsx       |  160 [31m---[m
+ .../conNECt/client/src/components/BadgesTab.jsx    |   71 [31m--[m
+ .../conNECt/client/src/components/ChatTab.jsx      |   72 [31m--[m
+ .../client/src/components/DailyTasksTab.jsx        |   79 [31m--[m
+ .../conNECt/client/src/components/FollowButton.jsx |   34 [31m-[m
+ .../client/src/components/LeaderboardTab.jsx       |  143 [31m---[m
+ .../client/src/components/NetworkConstellation.jsx |   56 [31m-[m
+ .../client/src/components/NotificationBell.jsx     |   80 [31m--[m
+ .../conNECt/client/src/components/PollsTab.jsx     |  163 [31m---[m
+ .../conNECt/client/src/components/PostCard.jsx     |  109 [31m--[m
+ .../conNECt/client/src/components/PostComposer.jsx |   63 [31m-[m
+ .../client/src/components/ProtectedRoute.jsx       |   23 [31m-[m
+ .../client/src/components/RequestBoardTab.jsx      |  160 [31m---[m
+ .../client/src/components/SuggestionsTab.jsx       |  149 [31m---[m
+ .../client/src/components/VideoClassTab.jsx        |   44 [31m-[m
+ .../conNECt/client/src/context/AuthContext.jsx     |   50 [31m-[m
+ .../conNECt/client/src/hooks/useSocket.js          |   31 [31m-[m
+ conNECt-complete/conNECt/client/src/index.css      |   11 [31m-[m
+ .../conNECt/client/src/layouts/DashboardLayout.jsx |   67 [31m--[m
+ conNECt-complete/conNECt/client/src/main.jsx       |   16 [31m-[m
+ .../conNECt/client/src/pages/AdminDashboard.jsx    |   51 [31m-[m
+ .../conNECt/client/src/pages/Calendar.jsx          |  130 [31m---[m
+ .../conNECt/client/src/pages/ClubDetail.jsx        |   71 [31m--[m
+ .../conNECt/client/src/pages/Clubs.jsx             |   79 [31m--[m
+ .../conNECt/client/src/pages/CommunityHub.jsx      |   45 [31m-[m
+ .../conNECt/client/src/pages/EventDetail.jsx       |   66 [31m--[m
+ .../conNECt/client/src/pages/Events.jsx            |   89 [31m--[m
+ .../conNECt/client/src/pages/Explore.jsx           |   74 [31m--[m
+ conNECt-complete/conNECt/client/src/pages/Feed.jsx |   54 [31m-[m
+ .../conNECt/client/src/pages/Gamification.jsx      |   48 [31m-[m
+ .../conNECt/client/src/pages/Login.jsx             |   94 [31m--[m
+ .../conNECt/client/src/pages/MentorRequests.jsx    |   79 [31m--[m
+ .../conNECt/client/src/pages/Profile.jsx           |  112 [31m--[m
+ .../conNECt/client/src/pages/ProjectDetail.jsx     |  146 [31m---[m
+ .../conNECt/client/src/pages/Projects.jsx          |   86 [31m--[m
+ .../conNECt/client/src/pages/Register.jsx          |  149 [31m---[m
+ .../conNECt/client/src/pages/Workspace.jsx         |   64 [31m--[m
+ .../conNECt/client/src/services/api.js             |   27 [31m-[m
+ .../conNECt/client/src/utils/timeAgo.js            |   15 [31m-[m
+ conNECt-complete/conNECt/client/tailwind.config.js |   20 [31m-[m
+ conNECt-complete/conNECt/client/vite.config.js     |    7 [31m-[m
+ conNECt-complete/conNECt/server/.env.example       |   25 [31m-[m
+ conNECt-complete/conNECt/server/config/db.js       |   13 [31m-[m
+ .../conNECt/server/controllers/adminController.js  |  120 [31m--[m
+ .../server/controllers/assignmentController.js     |  133 [31m---[m
+ .../conNECt/server/controllers/authController.js   |   69 [31m--[m
+ .../conNECt/server/controllers/badgeController.js  |   46 [31m-[m
+ .../server/controllers/challengeController.js      |   95 [31m--[m
+ .../conNECt/server/controllers/chatController.js   |   22 [31m-[m
+ .../conNECt/server/controllers/clubController.js   |   96 [31m--[m
+ .../controllers/communityRequestController.js      |   79 [31m--[m
+ .../server/controllers/dailyTaskController.js      |   83 [31m--[m
+ .../server/controllers/departmentController.js     |   17 [31m-[m
+ .../conNECt/server/controllers/eventController.js  |  171 [31m---[m
+ .../conNECt/server/controllers/followController.js |   65 [31m--[m
+ .../conNECt/server/controllers/mentorController.js |  131 [31m---[m
+ .../server/controllers/notificationController.js   |   21 [31m-[m
+ .../conNECt/server/controllers/pollController.js   |   60 [31m-[m
+ .../conNECt/server/controllers/postController.js   |  162 [31m---[m
+ .../server/controllers/projectController.js        |  121 [31m--[m
+ .../server/controllers/suggestionController.js     |   42 [31m-[m
+ .../conNECt/server/controllers/userController.js   |   54 [31m-[m
+ .../server/controllers/workspaceController.js      |   71 [31m--[m
+ conNECt-complete/conNECt/server/middleware/auth.js |   30 [31m-[m
+ .../conNECt/server/middleware/errorHandler.js      |   31 [31m-[m
+ .../conNECt/server/middleware/roleCheck.js         |   13 [31m-[m
+ .../conNECt/server/models/Assignment.js            |   17 [31m-[m
+ conNECt-complete/conNECt/server/models/Badge.js    |   14 [31m-[m
+ .../conNECt/server/models/Challenge.js             |   20 [31m-[m
+ .../conNECt/server/models/ChatMessage.js           |   16 [31m-[m
+ conNECt-complete/conNECt/server/models/Club.js     |   14 [31m-[m
+ .../conNECt/server/models/ClubMembership.js        |   14 [31m-[m
+ conNECt-complete/conNECt/server/models/Comment.js  |   15 [31m-[m
+ .../conNECt/server/models/CommunityRequest.js      |   19 [31m-[m
+ .../conNECt/server/models/DailyTask.js             |   21 [31m-[m
+ .../conNECt/server/models/Department.js            |   13 [31m-[m
+ conNECt-complete/conNECt/server/models/Event.js    |   27 [31m-[m
+ .../conNECt/server/models/EventRegistration.js     |   15 [31m-[m
+ conNECt-complete/conNECt/server/models/Follow.js   |   15 [31m-[m
+ .../conNECt/server/models/MentorRequest.js         |   20 [31m-[m
+ .../conNECt/server/models/Notification.js          |   25 [31m-[m
+ conNECt-complete/conNECt/server/models/Poll.js     |   16 [31m-[m
+ conNECt-complete/conNECt/server/models/Post.js     |   18 [31m-[m
+ conNECt-complete/conNECt/server/models/PostLike.js |   14 [31m-[m
+ conNECt-complete/conNECt/server/models/Project.js  |   27 [31m-[m
+ .../conNECt/server/models/ProjectMember.js         |   15 [31m-[m
+ .../conNECt/server/models/Submission.js            |   19 [31m-[m
+ .../conNECt/server/models/Suggestion.js            |   17 [31m-[m
+ conNECt-complete/conNECt/server/models/User.js     |   68 [31m--[m
+ .../conNECt/server/models/UserBadge.js             |   15 [31m-[m
+ .../conNECt/server/models/Workspace.js             |   16 [31m-[m
+ conNECt-complete/conNECt/server/package.json       |   27 [31m-[m
+ .../conNECt/server/routes/adminRoutes.js           |   20 [31m-[m
+ .../conNECt/server/routes/assignmentRoutes.js      |   10 [31m-[m
+ .../conNECt/server/routes/authRoutes.js            |   12 [31m-[m
+ .../conNECt/server/routes/badgeRoutes.js           |   11 [31m-[m
+ .../conNECt/server/routes/challengeRoutes.js       |   11 [31m-[m
+ .../conNECt/server/routes/clubRoutes.js            |   18 [31m-[m
+ .../server/routes/communityRequestRoutes.js        |   17 [31m-[m
+ .../conNECt/server/routes/dailyTaskRoutes.js       |   10 [31m-[m
+ .../conNECt/server/routes/departmentRoutes.js      |   11 [31m-[m
+ .../conNECt/server/routes/eventRoutes.js           |   19 [31m-[m
+ .../conNECt/server/routes/leaderboardRoutes.js     |    9 [31m-[m
+ .../conNECt/server/routes/mentorRoutes.js          |   11 [31m-[m
+ .../conNECt/server/routes/notificationRoutes.js    |   10 [31m-[m
+ .../conNECt/server/routes/pollRoutes.js            |   12 [31m-[m
+ .../conNECt/server/routes/postRoutes.js            |   20 [31m-[m
+ .../conNECt/server/routes/projectRoutes.js         |   16 [31m-[m
+ .../conNECt/server/routes/submissionRoutes.js      |    9 [31m-[m
+ .../conNECt/server/routes/suggestionRoutes.js      |   15 [31m-[m
+ .../conNECt/server/routes/userRoutes.js            |   18 [31m-[m
+ .../conNECt/server/routes/workspaceRoutes.js       |   19 [31m-[m
+ conNECt-complete/conNECt/server/server.js          |   99 [31m--[m
+ .../conNECt/server/services/daily.service.js       |   43 [31m-[m
+ .../conNECt/server/services/socket.service.js      |   82 [31m--[m
+ .../conNECt/server/utils/badgeAwards.js            |   45 [31m-[m
+ .../conNECt/server/utils/workspaceAccess.js        |    7 [31m-[m
+ conNECt-phase6/conNECt/README.md                   |   59 [31m-[m
+ conNECt-phase6/conNECt/client/.env.example         |    1 [31m-[m
+ conNECt-phase6/conNECt/client/index.html           |   18 [31m-[m
+ conNECt-phase6/conNECt/client/package.json         |   28 [31m-[m
+ conNECt-phase6/conNECt/client/postcss.config.js    |    3 [31m-[m
+ conNECt-phase6/conNECt/client/src/App.jsx          |   43 [31m-[m
+ .../client/src/components/AssignmentsTab.jsx       |  160 [31m---[m
+ .../conNECt/client/src/components/ChatTab.jsx      |   72 [31m--[m
+ .../conNECt/client/src/components/FollowButton.jsx |   34 [31m-[m
+ .../client/src/components/NetworkConstellation.jsx |   56 [31m-[m
+ .../client/src/components/NotificationBell.jsx     |   80 [31m--[m
+ .../conNECt/client/src/components/PollsTab.jsx     |  163 [31m---[m
+ .../conNECt/client/src/components/PostCard.jsx     |  109 [31m--[m
+ .../conNECt/client/src/components/PostComposer.jsx |   63 [31m-[m
+ .../client/src/components/ProtectedRoute.jsx       |   23 [31m-[m
+ .../client/src/components/RequestBoardTab.jsx      |  160 [31m---[m
+ .../client/src/components/SuggestionsTab.jsx       |  149 [31m---[m
+ .../client/src/components/VideoClassTab.jsx        |   44 [31m-[m
+ .../conNECt/client/src/context/AuthContext.jsx     |   50 [31m-[m
+ .../conNECt/client/src/hooks/useSocket.js          |   31 [31m-[m
+ conNECt-phase6/conNECt/client/src/index.css        |   11 [31m-[m
+ .../conNECt/client/src/layouts/DashboardLayout.jsx |   63 [31m-[m
+ conNECt-phase6/conNECt/client/src/main.jsx         |   16 [31m-[m
+ .../conNECt/client/src/pages/Calendar.jsx          |  130 [31m---[m
+ .../conNECt/client/src/pages/ClubDetail.jsx        |   71 [31m--[m
+ conNECt-phase6/conNECt/client/src/pages/Clubs.jsx  |   79 [31m--[m
+ .../conNECt/client/src/pages/CommunityHub.jsx      |   45 [31m-[m
+ .../conNECt/client/src/pages/EventDetail.jsx       |   66 [31m--[m
+ conNECt-phase6/conNECt/client/src/pages/Events.jsx |   89 [31m--[m
+ .../conNECt/client/src/pages/Explore.jsx           |   74 [31m--[m
+ conNECt-phase6/conNECt/client/src/pages/Feed.jsx   |   54 [31m-[m
+ conNECt-phase6/conNECt/client/src/pages/Login.jsx  |   94 [31m--[m
+ .../conNECt/client/src/pages/MentorRequests.jsx    |   79 [31m--[m
+ .../conNECt/client/src/pages/Profile.jsx           |   90 [31m--[m
+ .../conNECt/client/src/pages/ProjectDetail.jsx     |  146 [31m---[m
+ .../conNECt/client/src/pages/Projects.jsx          |   86 [31m--[m
+ .../conNECt/client/src/pages/Register.jsx          |  149 [31m---[m
+ .../conNECt/client/src/pages/Workspace.jsx         |   64 [31m--[m
+ conNECt-phase6/conNECt/client/src/services/api.js  |   27 [31m-[m
+ conNECt-phase6/conNECt/client/src/utils/timeAgo.js |   15 [31m-[m
+ conNECt-phase6/conNECt/client/tailwind.config.js   |   20 [31m-[m
+ conNECt-phase6/conNECt/client/vite.config.js       |    7 [31m-[m
+ conNECt-phase6/conNECt/server/.env.example         |   25 [31m-[m
+ conNECt-phase6/conNECt/server/config/db.js         |   13 [31m-[m
+ .../server/controllers/assignmentController.js     |  133 [31m---[m
+ .../conNECt/server/controllers/authController.js   |   69 [31m--[m
+ .../conNECt/server/controllers/chatController.js   |   22 [31m-[m
+ .../conNECt/server/controllers/clubController.js   |   96 [31m--[m
+ .../controllers/communityRequestController.js      |   73 [31m--[m
+ .../server/controllers/departmentController.js     |   17 [31m-[m
+ .../conNECt/server/controllers/eventController.js  |  171 [31m---[m
+ .../conNECt/server/controllers/followController.js |   65 [31m--[m
+ .../conNECt/server/controllers/mentorController.js |  131 [31m---[m
+ .../server/controllers/notificationController.js   |   21 [31m-[m
+ .../conNECt/server/controllers/pollController.js   |   60 [31m-[m
+ .../conNECt/server/controllers/postController.js   |  162 [31m---[m
+ .../server/controllers/projectController.js        |  119 [31m--[m
+ .../server/controllers/suggestionController.js     |   42 [31m-[m
+ .../conNECt/server/controllers/userController.js   |   54 [31m-[m
+ .../server/controllers/workspaceController.js      |   71 [31m--[m
+ conNECt-phase6/conNECt/server/middleware/auth.js   |   30 [31m-[m
+ .../conNECt/server/middleware/errorHandler.js      |   31 [31m-[m
+ .../conNECt/server/middleware/roleCheck.js         |   13 [31m-[m
+ conNECt-phase6/conNECt/server/models/Assignment.js |   17 [31m-[m
+ .../conNECt/server/models/ChatMessage.js           |   16 [31m-[m
+ conNECt-phase6/conNECt/server/models/Club.js       |   14 [31m-[m
+ .../conNECt/server/models/ClubMembership.js        |   14 [31m-[m
+ conNECt-phase6/conNECt/server/models/Comment.js    |   15 [31m-[m
+ .../conNECt/server/models/CommunityRequest.js      |   19 [31m-[m
+ conNECt-phase6/conNECt/server/models/Department.js |   13 [31m-[m
+ conNECt-phase6/conNECt/server/models/Event.js      |   27 [31m-[m
+ .../conNECt/server/models/EventRegistration.js     |   15 [31m-[m
+ conNECt-phase6/conNECt/server/models/Follow.js     |   15 [31m-[m
+ .../conNECt/server/models/MentorRequest.js         |   20 [31m-[m
+ .../conNECt/server/models/Notification.js          |   25 [31m-[m
+ conNECt-phase6/conNECt/server/models/Poll.js       |   16 [31m-[m
+ conNECt-phase6/conNECt/server/models/Post.js       |   18 [31m-[m
+ conNECt-phase6/conNECt/server/models/PostLike.js   |   14 [31m-[m
+ conNECt-phase6/conNECt/server/models/Project.js    |   27 [31m-[m
+ .../conNECt/server/models/ProjectMember.js         |   15 [31m-[m
+ conNECt-phase6/conNECt/server/models/Submission.js |   19 [31m-[m
+ conNECt-phase6/conNECt/server/models/Suggestion.js |   17 [31m-[m
+ conNECt-phase6/conNECt/server/models/User.js       |   67 [31m--[m
+ conNECt-phase6/conNECt/server/models/Workspace.js  |   16 [31m-[m
+ conNECt-phase6/conNECt/server/package.json         |   27 [31m-[m
+ .../conNECt/server/routes/assignmentRoutes.js      |   10 [31m-[m
+ conNECt-phase6/conNECt/server/routes/authRoutes.js |   12 [31m-[m
+ conNECt-phase6/conNECt/server/routes/clubRoutes.js |   18 [31m-[m
+ .../server/routes/communityRequestRoutes.js        |   17 [31m-[m
+ .../conNECt/server/routes/departmentRoutes.js      |   11 [31m-[m
+ .../conNECt/server/routes/eventRoutes.js           |   19 [31m-[m
+ .../conNECt/server/routes/mentorRoutes.js          |   11 [31m-[m
+ .../conNECt/server/routes/notificationRoutes.js    |   10 [31m-[m
+ conNECt-phase6/conNECt/server/routes/pollRoutes.js |   12 [31m-[m
+ conNECt-phase6/conNECt/server/routes/postRoutes.js |   20 [31m-[m
+ .../conNECt/server/routes/projectRoutes.js         |   16 [31m-[m
+ .../conNECt/server/routes/submissionRoutes.js      |    9 [31m-[m
+ .../conNECt/server/routes/suggestionRoutes.js      |   15 [31m-[m
+ conNECt-phase6/conNECt/server/routes/userRoutes.js |   18 [31m-[m
+ .../conNECt/server/routes/workspaceRoutes.js       |   19 [31m-[m
+ conNECt-phase6/conNECt/server/server.js            |   75 [31m--[m
+ .../conNECt/server/services/daily.service.js       |   43 [31m-[m
+ .../conNECt/server/services/socket.service.js      |   82 [31m--[m
+ .../conNECt/server/utils/workspaceAccess.js        |    7 [31m-[m
+ conNECt-phase7/conNECt/README.md                   |   42 [31m-[m
+ conNECt-phase7/conNECt/client/.env.example         |    1 [31m-[m
+ conNECt-phase7/conNECt/client/index.html           |   18 [31m-[m
+ conNECt-phase7/conNECt/client/package.json         |   28 [31m-[m
+ conNECt-phase7/conNECt/client/postcss.config.js    |    3 [31m-[m
+ conNECt-phase7/conNECt/client/src/App.jsx          |   45 [31m-[m
+ .../client/src/components/AssignmentsTab.jsx       |  160 [31m---[m
+ .../conNECt/client/src/components/BadgesTab.jsx    |   71 [31m--[m
+ .../conNECt/client/src/components/ChatTab.jsx      |   72 [31m--[m
+ .../client/src/components/DailyTasksTab.jsx        |   79 [31m--[m
+ .../conNECt/client/src/components/FollowButton.jsx |   34 [31m-[m
+ .../client/src/components/LeaderboardTab.jsx       |  143 [31m---[m
+ .../client/src/components/NetworkConstellation.jsx |   56 [31m-[m
+ .../client/src/components/NotificationBell.jsx     |   80 [31m--[m
+ .../conNECt/client/src/components/PollsTab.jsx     |  163 [31m---[m
+ .../conNECt/client/src/components/PostCard.jsx     |  109 [31m--[m
+ .../conNECt/client/src/components/PostComposer.jsx |   63 [31m-[m
+ .../client/src/components/ProtectedRoute.jsx       |   23 [31m-[m
+ .../client/src/components/RequestBoardTab.jsx      |  160 [31m---[m
+ .../client/src/components/SuggestionsTab.jsx       |  149 [31m---[m
+ .../client/src/components/VideoClassTab.jsx        |   44 [31m-[m
+ .../conNECt/client/src/context/AuthContext.jsx     |   50 [31m-[m
+ .../conNECt/client/src/hooks/useSocket.js          |   31 [31m-[m
+ conNECt-phase7/conNECt/client/src/index.css        |   11 [31m-[m
+ .../conNECt/client/src/layouts/DashboardLayout.jsx |   64 [31m--[m
+ conNECt-phase7/conNECt/client/src/main.jsx         |   16 [31m-[m
+ .../conNECt/client/src/pages/Calendar.jsx          |  130 [31m---[m
+ .../conNECt/client/src/pages/ClubDetail.jsx        |   71 [31m--[m
+ conNECt-phase7/conNECt/client/src/pages/Clubs.jsx  |   79 [31m--[m
+ .../conNECt/client/src/pages/CommunityHub.jsx      |   45 [31m-[m
+ .../conNECt/client/src/pages/EventDetail.jsx       |   66 [31m--[m
+ conNECt-phase7/conNECt/client/src/pages/Events.jsx |   89 [31m--[m
+ .../conNECt/client/src/pages/Explore.jsx           |   74 [31m--[m
+ conNECt-phase7/conNECt/client/src/pages/Feed.jsx   |   54 [31m-[m
+ .../conNECt/client/src/pages/Gamification.jsx      |   48 [31m-[m
+ conNECt-phase7/conNECt/client/src/pages/Login.jsx  |   94 [31m--[m
+ .../conNECt/client/src/pages/MentorRequests.jsx    |   79 [31m--[m
+ .../conNECt/client/src/pages/Profile.jsx           |  112 [31m--[m
+ .../conNECt/client/src/pages/ProjectDetail.jsx     |  146 [31m---[m
+ .../conNECt/client/src/pages/Projects.jsx          |   86 [31m--[m
+ .../conNECt/client/src/pages/Register.jsx          |  149 [31m---[m
+ .../conNECt/client/src/pages/Workspace.jsx         |   64 [31m--[m
+ conNECt-phase7/conNECt/client/src/services/api.js  |   27 [31m-[m
+ conNECt-phase7/conNECt/client/src/utils/timeAgo.js |   15 [31m-[m
+ conNECt-phase7/conNECt/client/tailwind.config.js   |   20 [31m-[m
+ conNECt-phase7/conNECt/client/vite.config.js       |    7 [31m-[m
+ conNECt-phase7/conNECt/server/.env.example         |   25 [31m-[m
+ conNECt-phase7/conNECt/server/config/db.js         |   13 [31m-[m
+ .../server/controllers/assignmentController.js     |  133 [31m---[m
+ .../conNECt/server/controllers/authController.js   |   69 [31m--[m
+ .../conNECt/server/controllers/badgeController.js  |   46 [31m-[m
+ .../server/controllers/challengeController.js      |   95 [31m--[m
+ .../conNECt/server/controllers/chatController.js   |   22 [31m-[m
+ .../conNECt/server/controllers/clubController.js   |   96 [31m--[m
+ .../controllers/communityRequestController.js      |   79 [31m--[m
+ .../server/controllers/dailyTaskController.js      |   83 [31m--[m
+ .../server/controllers/departmentController.js     |   17 [31m-[m
+ .../conNECt/server/controllers/eventController.js  |  171 [31m---[m
+ .../conNECt/server/controllers/followController.js |   65 [31m--[m
+ .../conNECt/server/controllers/mentorController.js |  131 [31m---[m
+ .../server/controllers/notificationController.js   |   21 [31m-[m
+ .../conNECt/server/controllers/pollController.js   |   60 [31m-[m
+ .../conNECt/server/controllers/postController.js   |  162 [31m---[m
+ .../server/controllers/projectController.js        |  121 [31m--[m
+ .../server/controllers/suggestionController.js     |   42 [31m-[m
+ .../conNECt/server/controllers/userController.js   |   54 [31m-[m
+ .../server/controllers/workspaceController.js      |   71 [31m--[m
+ conNECt-phase7/conNECt/server/middleware/auth.js   |   30 [31m-[m
+ .../conNECt/server/middleware/errorHandler.js      |   31 [31m-[m
+ .../conNECt/server/middleware/roleCheck.js         |   13 [31m-[m
+ conNECt-phase7/conNECt/server/models/Assignment.js |   17 [31m-[m
+ conNECt-phase7/conNECt/server/models/Badge.js      |   14 [31m-[m
+ conNECt-phase7/conNECt/server/models/Challenge.js  |   20 [31m-[m
+ .../conNECt/server/models/ChatMessage.js           |   16 [31m-[m
+ conNECt-phase7/conNECt/server/models/Club.js       |   14 [31m-[m
+ .../conNECt/server/models/ClubMembership.js        |   14 [31m-[m
+ conNECt-phase7/conNECt/server/models/Comment.js    |   15 [31m-[m
+ .../conNECt/server/models/CommunityRequest.js      |   19 [31m-[m
+ conNECt-phase7/conNECt/server/models/DailyTask.js  |   21 [31m-[m
+ conNECt-phase7/conNECt/server/models/Department.js |   13 [31m-[m
+ conNECt-phase7/conNECt/server/models/Event.js      |   27 [31m-[m
+ .../conNECt/server/models/EventRegistration.js     |   15 [31m-[m
+ conNECt-phase7/conNECt/server/models/Follow.js     |   15 [31m-[m
+ .../conNECt/server/models/MentorRequest.js         |   20 [31m-[m
+ .../conNECt/server/models/Notification.js          |   25 [31m-[m
+ conNECt-phase7/conNECt/server/models/Poll.js       |   16 [31m-[m
+ conNECt-phase7/conNECt/server/models/Post.js       |   18 [31m-[m
+ conNECt-phase7/conNECt/server/models/PostLike.js   |   14 [31m-[m
+ conNECt-phase7/conNECt/server/models/Project.js    |   27 [31m-[m
+ .../conNECt/server/models/ProjectMember.js         |   15 [31m-[m
+ conNECt-phase7/conNECt/server/models/Submission.js |   19 [31m-[m
+ conNECt-phase7/conNECt/server/models/Suggestion.js |   17 [31m-[m
+ conNECt-phase7/conNECt/server/models/User.js       |   68 [31m--[m
+ conNECt-phase7/conNECt/server/models/UserBadge.js  |   15 [31m-[m
+ conNECt-phase7/conNECt/server/models/Workspace.js  |   16 [31m-[m
+ conNECt-phase7/conNECt/server/package.json         |   27 [31m-[m
+ .../conNECt/server/routes/assignmentRoutes.js      |   10 [31m-[m
+ conNECt-phase7/conNECt/server/routes/authRoutes.js |   12 [31m-[m
+ .../conNECt/server/routes/badgeRoutes.js           |   11 [31m-[m
+ .../conNECt/server/routes/challengeRoutes.js       |   11 [31m-[m
+ conNECt-phase7/conNECt/server/routes/clubRoutes.js |   18 [31m-[m
+ .../server/routes/communityRequestRoutes.js        |   17 [31m-[m
+ .../conNECt/server/routes/dailyTaskRoutes.js       |   10 [31m-[m
+ .../conNECt/server/routes/departmentRoutes.js      |   11 [31m-[m
+ .../conNECt/server/routes/eventRoutes.js           |   19 [31m-[m
+ .../conNECt/server/routes/leaderboardRoutes.js     |    9 [31m-[m
+ .../conNECt/server/routes/mentorRoutes.js          |   11 [31m-[m
+ .../conNECt/server/routes/notificationRoutes.js    |   10 [31m-[m
+ conNECt-phase7/conNECt/server/routes/pollRoutes.js |   12 [31m-[m
+ conNECt-phase7/conNECt/server/routes/postRoutes.js |   20 [31m-[m
+ .../conNECt/server/routes/projectRoutes.js         |   16 [31m-[m
+ .../conNECt/server/routes/submissionRoutes.js      |    9 [31m-[m
+ .../conNECt/server/routes/suggestionRoutes.js      |   15 [31m-[m
+ conNECt-phase7/conNECt/server/routes/userRoutes.js |   18 [31m-[m
+ .../conNECt/server/routes/workspaceRoutes.js       |   19 [31m-[m
+ conNECt-phase7/conNECt/server/server.js            |   95 [31m--[m
+ .../conNECt/server/services/daily.service.js       |   43 [31m-[m
+ .../conNECt/server/services/socket.service.js      |   82 [31m--[m
+ conNECt-phase7/conNECt/server/utils/badgeAwards.js |   45 [31m-[m
+ .../conNECt/server/utils/workspaceAccess.js        |    7 [31m-[m
+ server/.env                                        |   18 [32m+[m[31m-[m
+ server/controllers/adminController.js              |   86 [32m+[m[31m-[m
+ server/controllers/authController.js               |  470 [32m++++++[m[31m--[m
+ server/controllers/badgeController.js              |   46 [31m-[m
+ server/controllers/challengeController.js          |   95 [31m--[m
+ server/controllers/communityRequestController.js   |    4 [31m-[m
+ server/controllers/dailyTaskController.js          |   83 [31m--[m
+ server/controllers/mentorshipController.js         |  257 [32m+++[m[31m--[m
+ server/controllers/postController.js               |  125 [32m+[m[31m-[m
+ server/middleware/auth.js                          |   11 [32m+[m
+ server/models/Badge.js                             |   14 [31m-[m
+ server/models/Challenge.js                         |   20 [31m-[m
+ server/models/DailyTask.js                         |   21 [31m-[m
+ server/models/MentorRequest.js                     |    4 [32m+[m
+ server/models/Mentorship.js                        |    4 [32m+[m
+ server/models/MentorshipMessage.js                 |   22 [32m+[m[31m-[m
+ server/models/Notification.js                      |    4 [32m+[m[31m-[m
+ server/models/Post.js                              |   18 [32m+[m[31m-[m
+ server/models/Suggestion.js                        |    2 [32m+[m[31m-[m
+ server/models/User.js                              |   81 [32m+[m[31m-[m
+ server/models/UserBadge.js                         |   15 [31m-[m
+ server/package-lock.json                           |  279 [32m+++++[m
+ server/package.json                                |    2 [32m+[m
+ server/routes/adminRoutes.js                       |   17 [32m+[m[31m-[m
+ server/routes/authRoutes.js                        |   32 [32m+[m[31m-[m
+ server/routes/badgeRoutes.js                       |   11 [31m-[m
+ server/routes/challengeRoutes.js                   |   11 [31m-[m
+ server/routes/clubRoutes.js                        |    2 [32m+[m[31m-[m
+ server/routes/communityRequestRoutes.js            |    2 [32m+[m[31m-[m
+ server/routes/dailyTaskRoutes.js                   |   10 [31m-[m
+ server/routes/leaderboardRoutes.js                 |    9 [31m-[m
+ server/routes/mentorshipRoutes.js                  |    2 [32m+[m
+ server/routes/pollRoutes.js                        |    2 [32m+[m[31m-[m
+ server/routes/postRoutes.js                        |    6 [32m+[m
+ server/routes/suggestionRoutes.js                  |    2 [32m+[m[31m-[m
+ server/routes/userRoutes.js                        |   15 [32m+[m
+ server/server.js                                   |  176 [32m++[m[31m-[m
+ server/services/socket.service.js                  |   17 [32m+[m[31m-[m
+ server/utils/badgeAwards.js                        |   45 [31m-[m
+ 432 files changed, 4341 insertions(+), 19597 deletions(-)

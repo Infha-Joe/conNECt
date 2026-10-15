@@ -3,7 +3,6 @@ import CommunityRequest from "../models/CommunityRequest.js";
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
 import { emitToUser } from "../services/socket.service.js";
-import { awardBadge } from "../utils/badgeAwards.js";
 
 const populateUser = "name role profilePhoto department";
 
@@ -51,9 +50,6 @@ export const resolveRequest = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(req.user._id, { $inc: { xpPoints: 10 } });
 
   const helpedCount = await CommunityRequest.countDocuments({ helper: req.user._id });
-  if (helpedCount >= 5) {
-    await awardBadge(req.user._id, "Community Helper");
-  }
 
   const notification = await Notification.create({
     user: request.user._id, type: "community", title: "Your request was resolved",

@@ -35,7 +35,7 @@ const AdminModerationTab = () => {
               key={s}
               onClick={() => setFilter(s)}
               className={`rounded-md px-3 py-1 text-xs font-medium capitalize transition ${
-                filter === s ? "bg-ink text-parchment" : "text-slate-text hover:bg-ink/5"
+                filter === s ? "bg-ink text-white" : "text-slate-text hover:bg-ink/5"
               }`}
             >
               {s}

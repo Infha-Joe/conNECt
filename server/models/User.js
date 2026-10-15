@@ -1,4 +1,11 @@
-import mongoose from "mongoose";
+/* =========================================================================
+ * ❄️ AUTHENTICATION IS FROZEN ❄️
+ * Do not modify authentication files or password/JWT/email-verification logic 
+ * while implementing unrelated features.
+ * Reuse the existing auth system.
+ * ========================================================================= */
+
+﻿import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema(
@@ -8,6 +15,7 @@ const userSchema = new mongoose.Schema(
       required: [true, "Name is required"],
       trim: true,
     },
+    // The active, primary email used for communications
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -16,12 +24,49 @@ const userSchema = new mongoose.Schema(
       trim: true,
       match: [/^\S+@\S+\.\S+$/, "Please provide a valid email"],
     },
+    // The original college email (never changes once set)
+    collegeEmail: {
+      type: String,
+      lowercase: true,
+      trim: true,
+    },
+    // The user's verified personal email
+    personalEmail: {
+      type: String,
+      lowercase: true,
+      trim: true,
+    },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: function () {
+        return !this.collegeGoogleId && !this.personalGoogleId;
+      },
       minlength: [8, "Password must be at least 8 characters"],
-      select: false, // never returned by default
+      select: false,
     },
+    connectId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    collegeGoogleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    personalGoogleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: String,
+    verificationTokenExpires: Date,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
     role: {
       type: String,
       enum: ["student", "teacher", "alumni", "admin"],
@@ -32,7 +77,22 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
       unique: true,
-      sparse: true, // allows null for roles that may not have one (e.g. alumni)
+      sparse: true,
+    },
+    facultyId: {
+      type: String,
+      trim: true,
+      unique: true,
+      sparse: true,
+    },
+    status: {
+      type: String,
+      enum: ["active", "pending_approval", "rejected"],
+      default: "active",
+    },
+    alumniType: {
+      type: String,
+      enum: ["existing_student", "new_alumni"],
     },
     phone: {
       type: String,
@@ -43,7 +103,7 @@ const userSchema = new mongoose.Schema(
       ref: "Department",
     },
     year: {
-      type: Number, // relevant for students
+      type: Number, 
     },
     profilePhoto: {
       type: String,
@@ -67,12 +127,15 @@ const userSchema = new mongoose.Schema(
       },
     ],
     streak: { type: Number, default: 0 },
-    lastStreakDate: { type: String, default: "" }, // YYYY-MM-DD of last streak-counted day
+    lastStreakDate: { type: String, default: "" }, 
     xpPoints: { type: Number, default: 0 },
+    
     // --- Teacher Specific Fields ---
     designation: { type: String, trim: true },
     
     // --- Alumni Specific Fields ---
+    graduationYear: { type: Number },
+    alumniSince: { type: Date },
     batch: { type: String, trim: true },
     degree: { type: String, trim: true },
     currentCompany: { type: String, trim: true },
@@ -85,20 +148,18 @@ const userSchema = new mongoose.Schema(
 
 userSchema.index({ department: 1 });
 
-// Hash password before saving
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password") || !this.password) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-// Instance method to compare passwords
 userSchema.methods.comparePassword = async function (candidatePassword) {
+  if (!this.password) return false;
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-// Strip sensitive fields whenever a user doc is sent as JSON
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;

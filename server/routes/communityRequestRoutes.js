@@ -5,7 +5,7 @@ import {
   resolveRequest,
   deleteRequest,
 } from "../controllers/communityRequestController.js";
-import { protect } from "../middleware/auth.js";
+import { protect, restrictTo } from "../middleware/auth.js";
 
 const router = express.Router();
 

@@ -37,8 +37,6 @@ const AdminOverviewTab = () => {
         <StatCard icon={FileText} label="Total Posts" value={analytics.content.posts} />
         <StatCard icon={FolderGit2} label="Total Projects" value={analytics.projects.total} />
         <StatCard icon={FolderGit2} label="Active Workspaces" value={analytics.projects.activeMentorCollaborations} />
-        <StatCard icon={PartyPopper} label="Total Events" value={analytics.events.total} />
-        <StatCard icon={Users} label="Event Registrations" value={analytics.events.totalRegistrations} />
         <StatCard icon={MessageSquarePlus} label="Pending Suggestions" value={analytics.community.pendingSuggestions} />
         <StatCard icon={HandHelping} label="Open Community Requests" value={analytics.community.openCommunityRequests} />
       </div>
